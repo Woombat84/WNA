@@ -1,0 +1,76 @@
+
+
+class Setup:
+	ORIENTATION="52"
+	class Orientation:
+		Up="1"
+		Down="2"
+		Auto="0"
+
+	QUIK_CAPTURE="54"
+	class QuikCapture:
+		ON="1"
+		OFF="2"
+
+	LED_BLINK="55"
+	class LedBlink:
+		Led_OFF="0"
+		Led_2="1"
+		Led_4="2"
+
+	LED_BLINK_NEW="91"
+	class LedBlinkNew:
+		Led_OFF="0"
+		Led_ON="2"
+		Led_FrontOff="1"
+
+	BEEP="56"
+	class Beep:
+		OFF="2"
+		SemiLoud="1"
+		Loud="0"
+
+	BEEP_H6="87"
+	class BeepH6:
+		HIGH="100"
+		MEDIUM="70"
+		LOW="40"
+		MUTE="0"
+		
+	AUTO_OFF="59"
+	class AutoOff:
+		Never="0"
+		A1Min="1"
+		A2Min="2"
+		A3Min="3"
+		A5Min="4"
+		A15Min="6"
+		A30Min="7"
+	GPS="83"
+	class MapLocate:
+		ON="1"
+		OFF="0"
+
+	VOICE_CONTROL="86"
+	class VoiceControl:
+		ON="1"
+		OFF="0"
+	WAKE_ON_VOICE="104"
+	class WakeOnVoice:
+		ON="1"
+		OFF="0"
+	WIFI="63"
+	class Wifi:
+		Remote="2"
+		SmartRemote="3"
+		OFF="0"
+
+	DISPLAY="72"
+	class Display:
+		ON="1"
+		OFF="0"
+	LANDSCAPE_LOCK="112"
+	class LandscapeLock:
+		OFF="0"
+		UP="1"
+		DOWN="2"
