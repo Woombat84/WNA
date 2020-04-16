@@ -65,7 +65,9 @@ imu_angle = 0.0
 today = date.today()
 cap_date = today.strftime("%m%d%Y")
 
-
+def pre_proseccing():
+    
+    return
 
 def save_image(img,_pos,_time,_pitch,number):
     _filename = "{}.jpeg".format("%03d"%number)
@@ -114,6 +116,7 @@ def speed(length):
 
 def imu_data():
      global dt_comp, pitch, alpha,gyro_pitch,imu
+     _err ="no"
      try:
         dt = time.time() - dt_comp
         dt_comp = time.time()
@@ -121,18 +124,24 @@ def imu_data():
         accel_pitch = math.degrees(math.atan2(imu_accel['z'],imu_accel['y']))
         gyro_pitch = gyro_pitch + imu_gyro['x'] * dt/1000.0
         pitch = alpha * (pitch + gyro_pitch) + (1 - alpha) * accel_pitch
+        return _err, int(pitch)
      except:
-        print("erroer")
+        print("pitch erroer")
+        _err = "a"
+        return _err, int(pitch)
      
 
-     return int(pitch)
+     
 
 def setup():
+
     ##setup of safety interupt / stop pin
     global imu_angle
     GPIO.add_event_detect(safe_pin, GPIO.FALLING,
                       callback=interrupt_handler,
                       bouncetime=200)
+    print("setup of interrupt done")
+    
     ##setup of imu
     global imu 
     #address of imu is 68
@@ -140,52 +149,66 @@ def setup():
     imu.set_accel_range(0)
     imu.set_gyro_range(0)
     #calculating pitch has to be estimated before hand
-    for i in range(100):
-        imu_angle = imu_data()
-
+    n = 100
+    for i in range(n):
+        err , imu_angle = imu_data()
+        while err == "a":
+            n = n + 1
+            err, imu_angle = imu_data()
+            
+    print("setup of imu, and angle is: {}".format(imu_angle))
+    
     ##setup of camera
     global  goproCamera
     #initiating object for go pro camera
     goproCamera = GoProCamera.GoPro()
     #camera mode
+    print("go pro battery level is: {}".format(goproCamera.getStatus(constants.Status.Status, constants.Status.STATUS.BattPercent)))
     goproCamera.mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single)
-    
+    print("mode of cam set")
     #camera setup
     
     #Orientation
     goproCamera.gpControlSet(constants.Setup.ORIENTATION,
-                            constants.Photo.Orientation.Auto)
+                            constants.Setup.Orientation.Auto)
     #turning off display
     goproCamera.gpControlSet(constants.Setup.DISPLAY,
-                            constants.Photo.Display.OFF)
+                            constants.Setup.Display.OFF)
+
+    print("setup of cam done")
     #photo setup
 
-    #camera settings adjusted -- R12L,R12W
+    #camera settings adjusted -- R12L,R12W,R12M,R12N,R18SPH
+    _res = constants.Photo.Resolution.R12N
     goproCamera.gpControlSet(constants.Photo.RESOLUTION,
-                            constants.Photo.Resolution.R12L)
+                            _res)
     #HDR control
+    _HDR = constants.Photo.HDR.ON
     goproCamera.gpControlSet(constants.Photo.HDR_PHOTO,
-                            constants.Photo.HDR.ON)
-    #supershot 
+                            _HDR)
+    #supershot
+    _SuperShot = constants.Photo.SuperPhoto.Auto
     goproCamera.gpControlSet(constants.Photo.SUPER_PHOTO,
-                            constants.Photo.SuperPhoto.Auto)
+                            _SuperShot)
     #sharpness
+    _sharp = constants.Photo.Sharpness.High
     goproCamera.gpControlSet(constants.Photo.SHARPNESS,
-                            constants.Photo.Sharpness.High)
+                            _sharp)
 
     #timer
+    _timer = constants.Photo.PhotoTimer.OFF
     goproCamera.gpControlSet(constants.Photo.PHOTO_TIMER,
-                            constants.Photo.PhotoTimer.OFF)
+                            _timer)
 
-
-
+    _setup = "{}_{}{}{}{}".format("%02d"%int(_res),_HDR,_SuperShot,_sharp,_timer)
+    print("setup of photo done")
 
     
     #libary change and creation
     now = datetime.datetime.now()
     clock = "{}{}".format(now.hour,"%02d"%now.minute)
     os.chdir('/home/pi/project/pictures')
-    _dir = "{}_{}_{}".format(cap_date,clock,imu_angle)
+    _dir = "{}_{}_{}".format(cap_date,_setup,"%02d"%imu_angle)
     os.mkdir(_dir)
     os.chdir(_dir)
     
@@ -227,6 +250,7 @@ def main():
         save_image(image,obj.pos,obj.time,obj.pitch,obj.number)
 
     print('done complet')
+    print("go pro battery level is now: {}".format(goproCamera.getStatus(constants.Status.Status, constants.Status.STATUS.BattPercent)))
     GPIO.cleanup()
     exit(1)
 
