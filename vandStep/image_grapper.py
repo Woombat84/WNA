@@ -31,6 +31,9 @@ GPIO.setup(dir_pin, GPIO.OUT)
 step_pin = 11
 GPIO.setup(step_pin, GPIO.OUT)
 
+#led finsih pin
+finish_led = 37
+GPIO.setup(finish_led, GPIO.OUT)
 #safty pin
 safe_pin = 15
 GPIO.setup(safe_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -214,7 +217,13 @@ def setup():
     
     return
 
-
+def blink():
+    for i in range(10):
+        GPIO.output(finish_led, True)
+        time.sleep(0.7)
+        GPIO.output(finish_led, False)
+        time.sleep(0.7) 
+    return
 
 # holdes the data aquriede to easy storing per image
 class image_holder():
@@ -251,6 +260,7 @@ def main():
 
     print('done complet')
     print("go pro battery level is now: {}".format(goproCamera.getStatus(constants.Status.Status, constants.Status.STATUS.BattPercent)))
+    blink()
     GPIO.cleanup()
     exit(1)
 
