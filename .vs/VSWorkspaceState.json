@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\vandStep"
+    "\\pipline",
+    "\\pipline\\examples"
   ],
-  "SelectedNode": "\\vandStep\\image_grapper.py",
+  "SelectedNode": "\\pipline\\examples\\edgePrepross.py",
   "PreviewInSolutionExplorer": false
 }
