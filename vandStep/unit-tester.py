@@ -155,7 +155,7 @@ def setup_gopro():
     #camera settings adjusted
     goproCamera.gpControlSet(constants.Photo.RESOLUTION,
                             constants.Photo.Resolution.R12W)
-
+    goproCamera.locate(constants.Locate.Start)
     return
 # holdes the data aquriede to easy storing per image
 class image_holder(obj):

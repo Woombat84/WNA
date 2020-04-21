@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 
 #operating system
 import os
+import subprocess
 
 #control of time 
 import time as time
@@ -48,7 +49,7 @@ stepcycle = 0.01
 steptime = stepcycle*0.5
 
 #amount of step for full length of akvrium
-step_release = 1000
+step_release = 0
 
 #this state changes on the interrupt, if the cart has reach the end of the aqurium
 state = 1
@@ -102,7 +103,7 @@ def interrupt_handler(channel):
 
 
 def speed(length):
-    global pitch, imu_angle
+    global pitch, imu_angle,step_release
     counter = 0
     GPIO.output(dir_pin, False) 
     time.sleep(steptime)
@@ -112,7 +113,7 @@ def speed(length):
         time.sleep(steptime)
         GPIO.output(step_pin, False)
         time.sleep(steptime)    
-    step_release = counter
+    step_release += counter
     #print(counter)
     return counter * steplength , imu_angle
     
@@ -218,12 +219,29 @@ def setup():
     return
 
 def blink():
-    for i in range(10):
+    goproCamera.locate(constants.Locate.Start)
+    
+    for i in range(5):
         GPIO.output(finish_led, True)
         time.sleep(0.7)
         GPIO.output(finish_led, False)
         time.sleep(0.7) 
+
+    goproCamera.locate(constants.Locate.Stop)
     return
+
+def release():
+    global step_release
+    GPIO.output(dir_pin, True) 
+    time.sleep(steptime)
+    while step_release >= 0:
+        step_release -= 1
+        GPIO.output(step_pin, True)
+        time.sleep(steptime)
+        GPIO.output(step_pin, False)
+        time.sleep(steptime)
+    return
+
 
 # holdes the data aquriede to easy storing per image
 class image_holder():
@@ -251,7 +269,9 @@ def main():
             photo_count = photo_count + 1
        except:
             print("missed an image")
-
+    x = str(input('ready for release????'))
+    if x == "y":
+        release()
     print("image cap done")
     for obj in image_list:
         print("number {} out of {}".format(obj.number+1,photo_count))
@@ -260,7 +280,9 @@ def main():
 
     print('done complet')
     print("go pro battery level is now: {}".format(goproCamera.getStatus(constants.Status.Status, constants.Status.STATUS.BattPercent)))
+    
     blink()
+    
     GPIO.cleanup()
     exit(1)
 
