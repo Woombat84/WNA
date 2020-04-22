@@ -146,7 +146,7 @@ def setup():
     global args
     _args =sys.argv[1:]
     if not args:
-        _args = input("please add a weed number")
+        _args = input("please add a weed number: ")
 
     ##setup of safety interupt / stop pin
     global imu_angle

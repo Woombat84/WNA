@@ -13,7 +13,12 @@ def weight_sub_img(img,weight_green,weight_red,weight_blue):
 
     b, g, r = cv2.split(img)
 
-    weigthed = weight_green*g-weight_red*r-weight_blue*b
+    img = weight_green*g-weight_red*r-weight_blue*b
+
+
+    mean_c = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 12)
+
+    weigthed = cv2.bitwise_and(image, img, mask=mean_c)
 
     return weigthed
 
@@ -41,9 +46,7 @@ img = cv2.medianBlur(hsv_img(image) ,5)
 cv2.imshow("img", img)
 
 
-#mean_c = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 12)
 
-#bit_and = cv2.bitwise_and(image, img, mask=mean_c)
 
 #print(image.shape)
 
