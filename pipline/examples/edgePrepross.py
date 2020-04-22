@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-image = cv2.imread("C:\\Users\\Jonathan\\Source\\Repos\\WNA\\pipline\\examples\\TestBillede.png")
+image = cv2.imread("TestBillede.png")
 img = cv2.GaussianBlur(image, (15, 15), 0)
 canny = cv2.Canny(img, 50, 80)
 

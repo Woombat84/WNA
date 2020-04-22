@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 
 #operating system
 import os
+import sys
 import subprocess
 
 #control of time 
@@ -69,6 +70,9 @@ imu_angle = 0.0
 today = date.today()
 cap_date = today.strftime("%m%d%Y")
 
+
+#input arguments for the weed number as annotation for the image group
+_args =""
 def pre_proseccing():
     
     return
@@ -78,7 +82,7 @@ def save_image(img,_pos,_time,_pitch,number):
     cv2.imwrite(_filename,img)
     im = Image.open(_filename)
     exif_dict = piexif.load(_filename)
-    exif_dict["0th"][piexif.ImageIFD.ImageDescription] = "pitch: {} postion: {}".format(_pitch,_pos)
+    exif_dict["0th"][piexif.ImageIFD.ImageDescription] = "weed number: {} pitch: {} postion: {}".format(_args,_pitch,_pos)
     exif_bytes = piexif.dump(exif_dict)
     im.save(_filename, "jpeg", exif=exif_bytes)
     im.close()
@@ -138,6 +142,11 @@ def imu_data():
      
 
 def setup():
+
+    global args
+    _args =sys.argv[1:]
+    if not args:
+        _args = input("please add a weed number")
 
     ##setup of safety interupt / stop pin
     global imu_angle
@@ -212,7 +221,7 @@ def setup():
     now = datetime.datetime.now()
     clock = "{}{}".format(now.hour,"%02d"%now.minute)
     os.chdir('/home/pi/project/pictures')
-    _dir = "{}_{}_{}".format(cap_date,_setup,"%02d"%imu_angle)
+    _dir = "{}_{}".format(cap_date,args)
     os.mkdir(_dir)
     os.chdir(_dir)
     
