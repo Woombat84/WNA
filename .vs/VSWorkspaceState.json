@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
+    "",
     "\\pipline",
     "\\pipline\\examples",
     "\\vandStep"
   ],
+  "SelectedNode": "\\pipline\\examples\\pre_seg.py",
   "PreviewInSolutionExplorer": false
 }
