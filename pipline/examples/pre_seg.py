@@ -43,11 +43,10 @@ gray_image = cv2.cvtColor(col_image, cv2.COLOR_BGR2GRAY)
 hsv_image = cv2.cvtColor(col_image, cv2.COLOR_BGR2HSV)
 
 col_hist = plotting(0,col_image,"color histogram")
-hsv_hist = plotting(1,hsv_image,"hsv histogram")
-gray_hist = plotting(2,gray_image,"gray histogram")
-
 plt.savefig("color histogram")
+hsv_hist = plotting(1,hsv_image,"hsv histogram")
 plt.savefig("hsv histogram")
+gray_hist = plotting(2,gray_image,"gray histogram")
 plt.savefig("gray histogram")
 
 wn_color = "color"
@@ -63,11 +62,10 @@ gray_retval, gray_dst = cv2.threshold(gray_image, 255,cv2.THRESH_BINARY, cv2.THR
 hsv_retval, hsv_dst = cv2.threshold(hsv_image, 255, cv2.THRESH_BINARY, cv2.THRESH_TRUNC)
 
 col_hist = plotting(0,col_image,"pre blur color histogram")
-hsv_hist = plotting(1,hsv_image,"pre blur hsv histogram")
-gray_hist = plotting(2,gray_image,"pre blur gray histogram")
-
 plt.savefig("pre blur color histogram")
+hsv_hist = plotting(1,hsv_image,"pre blur hsv histogram")
 plt.savefig("pre blur hsv histogram")
+gray_hist = plotting(2,gray_image,"pre blur gray histogram")
 plt.savefig("pre blur gray histogram")
 
 wn_pre_blur_can_color = "pre_blur_can_color"
@@ -136,11 +134,10 @@ gray_post_intv = 10
 hsv_post_intv = 10
 
 col_hist = plotting(0,col_image,"post blur color histogram")
-hsv_hist = plotting(1,hsv_image,"post blur hsv histogram")
-gray_hist = plotting(2,gray_image,"post blur gray histogram")
-
 plt.savefig("post blur color histogram")
+hsv_hist = plotting(1,hsv_image,"post blur hsv histogram")
 plt.savefig("post blur hsv histogram")
+gray_hist = plotting(2,gray_image,"post blur gray histogram")
 plt.savefig("post blur gray histogram")
 
 col_post_can = cv2.Canny(blur_col,col_blur_retval-col_post_intv,col_blur_retval+col_post_intv)
