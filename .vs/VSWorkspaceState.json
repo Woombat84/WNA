@@ -3,7 +3,6 @@
     "",
     "\\pipline",
     "\\pipline\\examples",
-    "\\pipline\\examples\\output",
     "\\vandStep"
   ],
   "SelectedNode": "\\vandStep\\step.py",
