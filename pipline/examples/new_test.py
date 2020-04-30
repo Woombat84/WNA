@@ -14,20 +14,21 @@ import matplotlib.pyplot as plt
 
 
 
-#image aqustion and pre-prosseccing is now done it is time for 
-#segmentation
+# image aqustion and pre-prosseccing is now done it is time for 
+# segmentation
 
-#bluring
-#edge detection
-#thresholding on color hsv
+# bluring
+# edge detection
+# thresholding on color hsv
 
 # this function segment the input image
 # depened on what representation the image
 # is in the output is a binary image. 
 def segmention(img,color):
-    #0 color
-    #1 HSV
-    #2 gray
+    # 0 color
+    # 1 HSV
+    # 2 gray
+    # erode
     if color == 0:
         blur_img = cv2.GaussianBlur(img, (9, 9), 0)
         canny = cv2.Canny(blur_img, 50, 80)
@@ -44,8 +45,8 @@ def segmention(img,color):
     return seg_img
         
 
-#now that segmentaion is done it is time for 
-#feature extracting
+# now that segmentaion is done it is time for 
+# feature extracting
 
 
 # find colors
@@ -59,37 +60,37 @@ def feature_ex(img,hsv,gray):
     # find colors
 
     # find countures 
-    col_contours, col_hierarchy	= cv2.findContours(img)
-    hsv_contours, hsv_hierarchy	= cv2.findContours(hsv)
-    gray_contours, gray_hierarchy = cv2.findContours(gray)
+    col_contours, col_hierarchy	= cv2.findContours(img,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    hsv_contours, hsv_hierarchy	= cv2.findContours(hsv,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    gray_contours, gray_hierarchy = cv2.findContours(gray,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+
+
 
     return lst_features
 
 
 
 
-#now that the features are extracted, the features can be used for 
-#either training or evealuting the weed number based on the tranined data
-#classification
+# now that the features are extracted, the features can be used for 
+# either training or evealuting the weed number based on the tranined data
+# classification
 
 
-#regresion training 
+# regresion training 
 def traning_data():
     pass
-#or
+# or
 
 # output a weed number on trained data
 def weed_number():
     pass
 
 
+# now the resaspie is determined, it is time to think about loading images 
+# into the process 
 
-
-#now the resaspie is determined, it is time to think about loading images 
-#into the process 
-
-#getting a path for a image 
-#returing a colored, HSV representaion and grayscaled image
+# getting a path for a image 
+# returing a colored, HSV representaion and grayscaled image
 def load_image(path):
     col_img = cv2.imread(path,cv2.IMREAD_COLOR)
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -114,9 +115,7 @@ def listDir():
         for fileName in fileNames:
             #here the functionalties has to be implemented
             counter = counter + 1
-            print(counter)
-         
-
+            print(counter)         
         os.chdir(retval)
 
 def resipe():

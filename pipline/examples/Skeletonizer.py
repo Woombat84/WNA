@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def Skeletonizer(img):
 
     if img.shape[2] != 1:
