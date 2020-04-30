@@ -78,8 +78,10 @@ def pre_proseccing():
     return
 
 def save_image(img,_pos,_time,_pitch,number):
+    crop_img = img[240:3912,126:3000]
+    res_img= cv2.resize(crop_img, (0,0), fx=0.75, fy=0.75) 
     _filename = "{}.jpeg".format("%03d"%number)
-    cv2.imwrite(_filename,img)
+    cv2.imwrite(_filename,res_img)
     im = Image.open(_filename)
     exif_dict = piexif.load(_filename)
     exif_dict["0th"][piexif.ImageIFD.ImageDescription] = "weed number: {} pitch: {} postion: {}".format(_args,_pitch,_pos)
@@ -143,9 +145,9 @@ def imu_data():
 
 def setup():
 
-    global args
-    _args =sys.argv[1:]
-    if not args:
+    global _args
+    _args = int(sys.argv[1])
+    if not _args:
         _args = input("please add a weed number: ")
 
     ##setup of safety interupt / stop pin
@@ -188,11 +190,29 @@ def setup():
     goproCamera.gpControlSet(constants.Setup.DISPLAY,
                             constants.Setup.Display.OFF)
 
+    #autooff
+    goproCamera.gpControlSet(constants.Setup.AUTO_OFF,
+                            constants.Setup.AutoOff.A15Min)
+    #beep
+    goproCamera.gpControlSet(constants.Setup.BEEP,
+                            constants.Setup.Beep.OFF)
+
+    goproCamera.gpControlSet(constants.Setup.BEEP_H6,
+                            constants.Setup.BeepH6.MUTE)
+    
+    #led off
+    goproCamera.gpControlSet(constants.Setup.LED_BLINK,
+                            constants.Setup.LedBlink.Led_OFF)
+    
+    goproCamera.gpControlSet(constants.Setup.LED_BLINK_NEW,
+                            constants.Setup.LedBlinkNew.Led_OFF)
+
+
     print("setup of cam done")
     #photo setup
 
     #camera settings adjusted -- R12L,R12W,R12M,R12N,R18SPH
-    _res = constants.Photo.Resolution.R12N
+    _res = constants.Photo.Resolution.R12L
     goproCamera.gpControlSet(constants.Photo.RESOLUTION,
                             _res)
     #HDR control
@@ -212,6 +232,7 @@ def setup():
     _timer = constants.Photo.PhotoTimer.OFF
     goproCamera.gpControlSet(constants.Photo.PHOTO_TIMER,
                             _timer)
+    
 
     _setup = "{}_{}{}{}{}".format("%02d"%int(_res),_HDR,_SuperShot,_sharp,_timer)
     print("setup of photo done")
@@ -221,13 +242,15 @@ def setup():
     now = datetime.datetime.now()
     clock = "{}{}".format(now.hour,"%02d"%now.minute)
     os.chdir('/home/pi/project/pictures')
-    _dir = "{}_{}".format(cap_date,args)
+    _dir = "{}_{}_{}".format(_args,cap_date,clock)
     os.mkdir(_dir)
     os.chdir(_dir)
     
     return
 
 def blink():
+    goproCamera.gpControlSet(constants.Setup.BEEP_H6,
+                            constants.Setup.BeepH6.MEDIUM)
     goproCamera.locate(constants.Locate.Start)
     
     for i in range(5):
@@ -278,9 +301,7 @@ def main():
             photo_count = photo_count + 1
        except:
             print("missed an image")
-    x = str(input('ready for release????'))
-    if x == "y":
-        release()
+
     print("image cap done")
     for obj in image_list:
         print("number {} out of {}".format(obj.number+1,photo_count))
