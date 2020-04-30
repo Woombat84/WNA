@@ -3,8 +3,9 @@
     "",
     "\\pipline",
     "\\pipline\\examples",
+    "\\pipline\\examples\\output",
     "\\vandStep"
   ],
-  "SelectedNode": "\\pipline\\examples\\pre_seg.py",
+  "SelectedNode": "\\vandStep\\step.py",
   "PreviewInSolutionExplorer": false
 }
