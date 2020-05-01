@@ -58,13 +58,25 @@ def segmention(img,color):
 
 def feature_ex(img,hsv,gray):
     # find colors
+    # bins initillaised
+    ligth_brown = 0
+    dark_brown = 0
+    light_green = 0
+    medium_light_green =0
+    medium_green = 0
+    medium_dark_green =0
+    dark_green = 0
+    # fill up the bins 
+
 
     # find countures 
     col_contours, col_hierarchy	= cv2.findContours(img,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
     hsv_contours, hsv_hierarchy	= cv2.findContours(hsv,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
     gray_contours, gray_hierarchy = cv2.findContours(gray,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
 
-
+    # length
+    # area
+    # skeleton
 
     return lst_features
 
@@ -73,6 +85,8 @@ def feature_ex(img,hsv,gray):
 
 # now that the features are extracted, the features can be used for 
 # either training or evealuting the weed number based on the tranined data
+
+# norm
 # classification
 
 
