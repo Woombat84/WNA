@@ -89,7 +89,7 @@ def segmention(img,color):
     if color == 2:
         #cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
         blur_img = cv2.GaussianBlur(img, (9, 9), 0)
-        retval, thres_img = cv2.threshold(img_gray, thresh, 255, cv2.THRESH_BINARY)
+        retval, thres_img = cv2.threshold(img_gray, thresh, 255, cv2.THRESH_BINARY,cv2.THRESH_OTSU)
         seg_img = cv2.erode(thres_img,element)
         #cv2.imshow(wn_color,seg_img)
     return seg_img
@@ -149,7 +149,7 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
     
     # fill up the bins 
     
-    ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green = colorBin(hsv_img)
+    #ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green = colorBin(hsv_img)
 
 
     # find countures 
@@ -159,14 +159,15 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
 
     # length
     arc_retval = cv2.arcLength(gray_contours,False)
-    arc_tot
+    arc_tot=0
     # area
-    area_tot
+    
     area_retval = cv2.contourArea(gray_contours)
+    area_tot=0
     # skeleton
     skel_img = Skeletonizer(col_img)
-    skel_tot
-    lst_features[arc_tot,area_tot,skel_tot,ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green]
+    skel_tot=0
+    lst_features=[arc_tot,area_tot,skel_tot,ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green]
     return lst_features
 
 
@@ -174,13 +175,38 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
 
 # now that the features are extracted, the features can be used for 
 # either training or evealuting the weed number based on the tranined data
+# before this there is a need to save the data to a file that can be used to train on
+
+
+def save_data(lst,weednumber):
+
+    try:
+        sheet = pd.read_execl('traningData.xlsx')
+        print("traning file opened")
+    except:
+        sheet = pd.ExcelWriter('traningData.xlsx')
+        print("new file created")
+   
+    sheet['arc_tot']=lst[0]
+    sheet['area_tot']=lst[1]
+    sheet['skel_tot']=lst[2]
+    sheet['ligth_brown']=lst[3]
+    sheet['dark_brown']=lst[4]
+    sheet['light_green']=lst[5]
+    sheet['medium_light_green']=lst[6]
+    sheet['medium_green']=lst[7]
+    sheet['medium_dark_green']=lst[8]
+    sheet['dark_green']=lst[9]
+    sheet.save()
+
+    return
 
 # norm
 # classification
 
 
 # regresion training 
-def traning_data(lst)
+def traning_data()
     pass
 # or
 
@@ -231,7 +257,7 @@ def resipe():
 
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
 
-    traning_data(lst)
+    save_data(lst,weedNumber)
 
 
     cv2.imshow("skel",skel)
