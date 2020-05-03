@@ -5,8 +5,8 @@ import cv2
 import time
 
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+#from sklearn.linear_model import LinearRegression
+#from sklearn.model_selection import train_test_split
 import pandas as pd
 
 
@@ -73,25 +73,25 @@ def segmention(img,color):
     element = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))
     
     if color == 0:
-        #cv2.namedWindow(wn_color, cv2.WINDOW_NORMAL)
+        cv2.namedWindow(wn_color, cv2.WINDOW_NORMAL)
         blur_img = cv2.GaussianBlur(img, (9, 9), 0)
         col_retval, thres_img = cv2.threshold(blur_img, 255, cv2.THRESH_BINARY, cv2.THRESH_TRUNC)
         canny_img = cv2.Canny(thres_img,col_retval-col_pre_intv,col_retval+col_pre_intv)
         seg_img = cv2.erode(canny_img,element)
-        #cv2.imshow(wn_color,seg_img)
+        cv2.imshow(wn_color,seg_img)
     if color == 1:
-        #cv2.namedWindow(wn_hsv, cv2.WINDOW_NORMAL)
+        cv2.namedWindow(wn_hsv, cv2.WINDOW_NORMAL)
         blur_img = cv2.GaussianBlur(img, (9, 9), 0)
         hsv_retval, thres_img = cv2.threshold(blur_img, 255, cv2.THRESH_BINARY, cv2.THRESH_TRUNC)
-        canny_img = cv2.Canny(blur_img,hsv_image,hsv_retval-hsv_pre_intv,hsv_retval+hsv_pre_intv)
+        canny_img = cv2.Canny(thres_img,hsv_retval-hsv_pre_intv,hsv_retval+hsv_pre_intv)
         seg_img = cv2.erode(canny_img,element)
-        #cv2.imshow(wn_color,seg_img)
+        cv2.imshow(wn_color,seg_img)
     if color == 2:
-        #cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
+        cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
         blur_img = cv2.GaussianBlur(img, (9, 9), 0)
-        retval, thres_img = cv2.threshold(img_gray, thresh, 255, cv2.THRESH_BINARY,cv2.THRESH_OTSU)
+        retval, thres_img = cv2.threshold(blur_img, 255, cv2.THRESH_BINARY,cv2.THRESH_OTSU)
         seg_img = cv2.erode(thres_img,element)
-        #cv2.imshow(wn_color,seg_img)
+        cv2.imshow(wn_color,seg_img)
     return seg_img
         
 
@@ -107,7 +107,13 @@ def colorBin(img):
            [sigma_low_dmg_h, sigma_high_dmg_h,sigma_low_dmg_s, sigma_high_dmg_s,sigma_low_dmg_v, sigma_high_dmg_v],
            [sigma_low_dg_h, sigma_high_dg_h,sigma_low_dg_s, sigma_high_dg_s,sigma_low_dg_v, sigma_high_dg_v]]
     # bins initillaised 
-    bin_lB=0,bin_dB=0,bin_lG=0,bin_mlG=0,bin_mG=0,bin_mdG=0,bin_dG=0
+    bin_lB=0
+    bin_dB=0
+    bin_lG=0
+    bin_mlG=0
+    bin_mG=0
+    bin_mdG=0
+    bin_dG=0
 
     reshp_img = img.reshape((img.shape[0]*img.shape[1],3))
     # fill up the bins
@@ -159,10 +165,12 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
 
     # length
     arc_retval = cv2.arcLength(gray_contours,False)
+    print(arc_retval)
     arc_tot=0
     # area
     
     area_retval = cv2.contourArea(gray_contours)
+    print(area_retval)
     area_tot=0
     # skeleton
     skel_img = Skeletonizer(col_img)
@@ -206,7 +214,7 @@ def save_data(lst,weednumber):
 
 
 # regresion training 
-def traning_data()
+def traning_data():
     pass
 # or
 
@@ -223,8 +231,8 @@ def weed_number():
 def load_image(path):
     img = cv2.imread(path,cv2.IMREAD_COLOR)
     col_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv_img= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray_img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     return col_img, gray_img, hsv_img
 
 
@@ -260,17 +268,23 @@ def resipe():
     save_data(lst,weedNumber)
 
 
-    cv2.imshow("skel",skel)
-    cv2.waitKey(0)
+    
 
 
 def main():
     path = "C:\\Users\\WoomBat\\Aalborg Universitet\\Jonathan Eichild Schmidt - P6 - billeder\\cropped_weednumber_sorted\\10_04282020_01\\011.jpeg"
-    col_img, hsv_img, gray_img = load_image(path) 
-    
-    bi_col_img = segmention(col_img,0)
+    col_img, hsv_img, gray_img = load_image(path) # testet done
+    #wn_color ="cool"
+    #cv2.namedWindow(wn_color, cv2.WINDOW_NORMAL)
+    #cv2.imshow(wn_color,col_img)
+    #cv2.waitKey(0)
 
-    
+    bin_col_img = segmention(col_img,0)# tested done
+    bin_hsv_img = segmention(hsv_img,1)# tested done
+    bin_gray_img = segmention(gray_img,2)# tested done
+
+    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need counting of pixels in skelton area and arclengteh
+    print(lst)
     
     exit(1)
 
