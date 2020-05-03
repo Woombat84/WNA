@@ -210,24 +210,42 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
 def save_data(lst,weednumber):
 
     try:
-        sheet = pd.read_execl('traningData.xlsx')
-        print("traning file opened")
-    except:
-        sheet = pd.ExcelWriter('traningData.xlsx')
-        print("new file created")
-   
-    sheet['arc_tot']=lst[0]
-    sheet['area_tot']=lst[1]
-    sheet['skel_tot']=lst[2]
-    sheet['ligth_brown']=lst[3]
-    sheet['dark_brown']=lst[4]
-    sheet['light_green']=lst[5]
-    sheet['medium_light_green']=lst[6]
-    sheet['medium_green']=lst[7]
-    sheet['medium_dark_green']=lst[8]
-    sheet['dark_green']=lst[9]
-    sheet['weed_number'] = weednumber
-    sheet.save()
+  sheet = pd.read_excel("./traning_data.xlsx",index_col=0)
+  print("traning file opened")
+  print(sheet.head())
+  new_data=pd.DataFrame({'arc_tot': lst[0],
+  'area_tot': lst[1],
+  'skel_tot':lst[2],
+  'ligth_brown':lst[3],
+  'dark_brown':lst[4],
+  'light_green':lst[5],
+  'medium_light_green':lst[6],
+  'medium_green': lst[7],
+  'medium_dark_green':lst[8],
+  'dark_green':lst[9],
+  'weed_number':[weednumber]})
+  new_sheet=sheet.append(new_data, ignore_index=True)
+  print(new_sheet.head())
+  writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
+  new_sheet.to_excel(writer)
+  writer.save()
+except:
+  sheet = pd.ExcelWriter('traningData.xlsx')
+  print("new file created")
+  new_data=pd.DataFrame({'arc_tot':[lst[0]],
+  'area_tot': [lst[1]],
+  'skel_tot':[lst[2]],
+  'ligth_brown':[lst[3]],
+  'dark_brown':[lst[4]],
+  'light_green':[lst[5]],
+  'medium_light_green':[lst[6]],
+  'medium_green':[lst[7]],
+  'medium_dark_green':[lst[8]],
+  'dark_green':[lst[9]],
+  'weed_number':[weednumber]})
+  writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
+  new_data.to_excel(writer)
+  writer.save()
 
     return
 
@@ -333,7 +351,6 @@ if __name__ == "__main__":
     #missing parts for now
 
     #colorbin sigma color values
-    #save data
     #get weednumber from folder or exif
     #load model 
     #get output
