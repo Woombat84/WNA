@@ -255,7 +255,7 @@ def save_data(lst,weednumber):
 
 # regresion training 
 def traning_data():
-    file = "./traning_data.xls"
+    file = "./traning_data.xlsx"
     df = pd.read_excel(file)
 
     print(df)
@@ -352,11 +352,18 @@ def main():
     bin_gray_img = segmention(gray_img,2)# tested done missing fine tuning
     
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need colorbin values and test
-    # when ready release next line
-    # filename = 'WNA_model.sav'
-    # model = pickle.load(open(filename, 'rb'))
-    # listDir(model,True)
     
+    # when ready release next line
+    # t1 = input(training? y for yes n for no :)
+    # if == 'y':
+    #   filename = 'WNA_model.sav'
+    #   model = pickle.load(open(filename, 'rb'))
+    #   listDir(model,True)
+    
+    # t2 = input(are we ready to create a model? y for yes n for no :)
+    #if t2 =='y':
+    #   traning_data() 
+
     exit(1)
 
 
