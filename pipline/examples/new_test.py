@@ -5,10 +5,10 @@ import cv2
 import time
 
 import numpy as np
-#from sklearn.linear_model import LinearRegression
-#from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 import pandas as pd
-
+import pickle
 
 import matplotlib.pyplot as plt
 
@@ -260,7 +260,7 @@ def traning_data():
 
     print(df)
 
-    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown,dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
+    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     y = df['weed_number']
     
     x, y = np.array(x), np.array(y)
@@ -278,11 +278,24 @@ def traning_data():
 
     print("Predicted values: ", y_pred)
     print("Actual values: ", y_test)
+
+    filename = 'WNA_model.sav'
+    pickle.dump(model, open(filename, 'wb'))
 # or
 
 # output a weed number on trained data
-def weed_number():
-    pass
+def weed_number(path,model):
+    col_img, hsv_img, gray_img = load_image(path) 
+    bin_col_img = segmention(col_img,0)
+    bin_hsv_img = segmention(hsv_img,1)
+    bin_gray_img = segmention(gray_img,2)
+    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
+    x = [lst[0],lst[1],lst[2],lst[3],lst[4],lst[5],lst[6],lst[7],lst[8],lst[9]]
+    X = np.array(x)
+    x = x.reshape(-1, 1)
+    WeedNumber = model.predict(X)
+    #result = model.score(X_test, Y_test)
+    return WeedNumber
 
 # now the resaspie is determined, it is time to think about loading images 
 # into the process 
@@ -300,7 +313,7 @@ def load_image(path):
 # goes into each folder and listing each file
 # from here it is possible to iterate thourgh all 
 # images that needs classifying  
-def listDir():
+def listDir(model,training=True):
     dirNames = os.listdir()
     retval = os.getcwd()
     
@@ -312,7 +325,10 @@ def listDir():
         os.chdir(dirName)
         fileNames = os.listdir()
         for fileName in fileNames:
-            resipe(fileName,weedNumber)
+            if training == True:
+                resipe(fileName,weedNumber)
+            if training == False:
+                weed_number(fileName,model)
             counter = counter + 1
             print(counter)         
         os.chdir(retval)
@@ -337,7 +353,9 @@ def main():
     
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need colorbin values and test
     # when ready release next line
-    # listDir()
+    # filename = 'WNA_model.sav'
+    # model = pickle.load(open(filename, 'rb'))
+    # listDir(model,True)
     
     exit(1)
 
@@ -352,6 +370,6 @@ if __name__ == "__main__":
 
 
     #missing parts for now
-    #colorbin sigma color values
-    #load model 
-    #get output
+    #colorbin sigma color values 104-110
+    
+    
