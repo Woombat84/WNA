@@ -210,42 +210,42 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
 def save_data(lst,weednumber):
 
     try:
-  sheet = pd.read_excel("./traning_data.xlsx",index_col=0)
-  print("traning file opened")
-  print(sheet.head())
-  new_data=pd.DataFrame({'arc_tot': lst[0],
-  'area_tot': lst[1],
-  'skel_tot':lst[2],
-  'ligth_brown':lst[3],
-  'dark_brown':lst[4],
-  'light_green':lst[5],
-  'medium_light_green':lst[6],
-  'medium_green': lst[7],
-  'medium_dark_green':lst[8],
-  'dark_green':lst[9],
-  'weed_number':[weednumber]})
-  new_sheet=sheet.append(new_data, ignore_index=True)
-  print(new_sheet.head())
-  writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
-  new_sheet.to_excel(writer)
-  writer.save()
-except:
-  sheet = pd.ExcelWriter('traningData.xlsx')
-  print("new file created")
-  new_data=pd.DataFrame({'arc_tot':[lst[0]],
-  'area_tot': [lst[1]],
-  'skel_tot':[lst[2]],
-  'ligth_brown':[lst[3]],
-  'dark_brown':[lst[4]],
-  'light_green':[lst[5]],
-  'medium_light_green':[lst[6]],
-  'medium_green':[lst[7]],
-  'medium_dark_green':[lst[8]],
-  'dark_green':[lst[9]],
-  'weed_number':[weednumber]})
-  writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
-  new_data.to_excel(writer)
-  writer.save()
+      sheet = pd.read_excel("./traning_data.xlsx",index_col=0)
+      print("traning file opened")
+      print(sheet.head())
+      new_data=pd.DataFrame({'arc_tot': lst[0],
+      'area_tot': lst[1],
+      'skel_tot':lst[2],
+      'ligth_brown':lst[3],
+      'dark_brown':lst[4],
+      'light_green':lst[5],
+      'medium_light_green':lst[6],
+      'medium_green': lst[7],
+      'medium_dark_green':lst[8],
+      'dark_green':lst[9],
+      'weed_number':[weednumber]})
+      new_sheet=sheet.append(new_data, ignore_index=True)
+      print(new_sheet.head())
+      writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
+      new_sheet.to_excel(writer)
+      writer.save()
+    except:
+      sheet = pd.ExcelWriter('traningData.xlsx')
+      print("new file created")
+      new_data=pd.DataFrame({'arc_tot':[lst[0]],
+      'area_tot': [lst[1]],
+      'skel_tot':[lst[2]],
+      'ligth_brown':[lst[3]],
+      'dark_brown':[lst[4]],
+      'light_green':[lst[5]],
+      'medium_light_green':[lst[6]],
+      'medium_green':[lst[7]],
+      'medium_dark_green':[lst[8]],
+      'dark_green':[lst[9]],
+      'weed_number':[weednumber]})
+      writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
+      new_data.to_excel(writer)
+      writer.save()
 
     return
 
@@ -336,7 +336,8 @@ def main():
     bin_gray_img = segmention(gray_img,2)# tested done missing fine tuning
     
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need colorbin values and test
-    print(lst)
+    # when ready release next line
+    # listDir()
     
     exit(1)
 
@@ -351,7 +352,6 @@ if __name__ == "__main__":
 
 
     #missing parts for now
-
     #colorbin sigma color values
     #load model 
     #get output
