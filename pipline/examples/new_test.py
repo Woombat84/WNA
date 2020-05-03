@@ -307,17 +307,19 @@ def listDir():
     for dirName in dirNames:
         counter = 1
         _dir = os.path.abspath(dirName)
-        os.chdir(_dir)
+        dirSplit = str(dirName).split('_')
+        weedNumber= dirSplit[0]
+        os.chdir(dirName)
         fileNames = os.listdir()
         for fileName in fileNames:
-            #here the functionalties has to be implemented
+            resipe(fileName,weedNumber)
             counter = counter + 1
             print(counter)         
         os.chdir(retval)
 
-def resipe():
+def resipe(path,weedNumber):
     
-    col_img, hsv_img, gray_img = load_image(" ") 
+    col_img, hsv_img, gray_img = load_image(path) 
     bin_col_img = segmention(col_img,0)
     bin_hsv_img = segmention(hsv_img,1)
     bin_gray_img = segmention(gray_img,2)
@@ -351,6 +353,5 @@ if __name__ == "__main__":
     #missing parts for now
 
     #colorbin sigma color values
-    #get weednumber from folder or exif
     #load model 
     #get output
