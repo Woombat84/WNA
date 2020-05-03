@@ -87,13 +87,14 @@ def segmention(img,color):
         seg_img = cv2.erode(canny_img,element)
         #cv2.imshow(wn_hsv,canny_img)
     if color == 2:
-        #cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
+        cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
         blur_img = cv2.GaussianBlur(img, (3, 3), 0)
         retval, thres_img = cv2.threshold(blur_img, 125, cv2.THRESH_BINARY,cv2.THRESH_OTSU)
         canny_img = cv2.Canny(blur_img,40,100)
         seg_img = cv2.erode(canny_img,element)
-        #cv2.imshow(wn_gray,canny_img)
-    return seg_img
+        cv2.imshow(wn_gray,canny_img)
+
+    return canny_img
         
 
 # now that segmentaion is done it is time for 
@@ -169,31 +170,32 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
     medium_dark_green=0
     dark_green=0
     #ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green = colorBin(hsv_img)
-
-    # find countures 
+   
+    #find countures 
     #col_contours, col_hierarchy = cv2.findContours(bin_col,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
     #hsv_contours, hsv_hierarchy = cv2.findContours(bin_hsv,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    
     gray_contours, gray_hierarchy = cv2.findContours(bin_gray,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
-
-    print(len(gray_contours))
-    print(len(gray_hierarchy))
+    
+    area_tot=0
+    arc_tot=0
     for i in range(len(gray_contours)):
         gray_cnt = gray_contours[i]
     
         # area
-    
         area_retval = cv2.contourArea(gray_cnt)
-        print("area : {}".format(area_retval))
-        area_tot=0
+        #print("area : {}".format(area_retval))
+        area_tot+=area_retval
 
         # length
-        arc_retval = cv2.arcLength(gray_cnt,True)
-        print("arc : {}".format(arc_retval))
-        arc_tot=0
-
+        arc_retval = cv2.arcLength(gray_cnt,False)
+        #print("arc : {}".format(arc_retval))
+        arc_tot+=arc_retval
+    
+    
     # skeleton
     skel_img = Skeletonizer(col_img)
-    skel_tot= pixelCount(skel_img)
+    skel_tot = pixelCount(skel_img)
     #wn_skel="skel"
     #print(skel_img)
     #cv2.namedWindow(wn_skel, cv2.WINDOW_NORMAL)
@@ -224,6 +226,7 @@ def save_data(lst,weednumber):
     sheet['medium_green']=lst[7]
     sheet['medium_dark_green']=lst[8]
     sheet['dark_green']=lst[9]
+    sheet['weed_number'] = weednumber
     sheet.save()
 
     return
@@ -234,7 +237,29 @@ def save_data(lst,weednumber):
 
 # regresion training 
 def traning_data():
-    pass
+    file = "./traning_data.xls"
+    df = pd.read_excel(file)
+
+    print(df)
+
+    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown,dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
+    y = df['weed_number']
+    
+    x, y = np.array(x), np.array(y)
+
+    x = x.reshape(-1, 1)
+
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
+
+    model = LinearRegression().fit(X_train, y_train)
+    r_sq = model.score(x, y) #R^2
+
+    print("R^2: ",r_sq)
+
+    y_pred = model.predict(X_test)
+
+    print("Predicted values: ", y_pred)
+    print("Actual values: ", y_test)
 # or
 
 # output a weed number on trained data
@@ -273,33 +298,24 @@ def listDir():
         os.chdir(retval)
 
 def resipe():
-    col_img, hsv_img, gray_img = load_image(" ") 
     
+    col_img, hsv_img, gray_img = load_image(" ") 
     bin_col_img = segmention(col_img,0)
     bin_hsv_img = segmention(hsv_img,1)
     bin_gray_img = segmention(gray_img,2)
-
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
-
     save_data(lst,weedNumber)
-
-
-    
 
 
 def main():
     path = "C:\\Users\\WoomBat\\Aalborg Universitet\\Jonathan Eichild Schmidt - P6 - billeder\\cropped_weednumber_sorted\\10_04282020_01\\011.jpeg"
     col_img, hsv_img, gray_img = load_image(path) # testet done
-    #wn_start ="start"
-    #cv2.namedWindow(wn_start, cv2.WINDOW_NORMAL)
-    #cv2.imshow(wn_start,col_img)
-    #cv2.waitKey(0)
 
     bin_col_img = segmention(col_img,0)# tested done missing fine tuning
     bin_hsv_img = segmention(hsv_img,1)# tested done missing fine tuning
     bin_gray_img = segmention(gray_img,2)# tested done missing fine tuning
-    cv2.waitKey(0)
-    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need area and arclengteh colorbin values
+    
+    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need colorbin values and test
     print(lst)
     
     exit(1)
@@ -309,3 +325,15 @@ if __name__ == "__main__":
     # execute only if run as a script
     main()    
    
+
+
+
+
+
+    #missing parts for now
+
+    #colorbin sigma color values
+    #save data
+    #get weednumber from folder or exif
+    #load model 
+    #get output
