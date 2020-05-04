@@ -307,7 +307,7 @@ def load_image(path):
     col_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     hsv_img= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray_img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    return col_img, gray_img, hsv_img
+    return col_img, hsv_img, gray_img
 
 # lists all dir in the folder
 # goes into each folder and listing each file
@@ -371,11 +371,6 @@ if __name__ == "__main__":
     # execute only if run as a script
     main()    
    
-
-
-
-
-
     #missing parts for now
     #colorbin sigma color values 104-110
     
