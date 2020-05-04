@@ -53,48 +53,29 @@ def Skeletonizer(img):
 # this function segment the input image
 # depened on what representation the image
 # is in the output is a binary image. 
-def segmention(img,color):
-    # 0 color
-    # 1 HSV
-    # 2 gray
-    # erode
-    wn_color = "color"
-    wn_hsv ="hsv"
-    wn_gray = "gray"
+def segmention(img):
+    # Green color
+    low_green = np.array([30, 30, 40])
+    high_green = np.array([100, 255, 255])
+    green_mask = cv2.inRange(img, low_green, high_green)
 
-    col_pre_intv = 10
-    gray_pre_intv = 10
-    hsv_pre_intv = 10
+    img = cv2.GaussianBlur(green_mask, (9, 9), 0)
+    img = cv2.bilateralFilter(img, 7, 100, 100)
 
-    col_pre_edges = 0.1
-    gray_pre_edges = 0.1
-    hsv_pre_edges = 0.1
+    Equal = cv2.equalizeHist(img[:,:])
 
-    element = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))
-    
-    if color == 0:
-        #cv2.namedWindow(wn_color, cv2.WINDOW_NORMAL)
-        blur_img = cv2.GaussianBlur(img, (9, 9), 0)
-        col_retval, thres_img = cv2.threshold(blur_img, 255, cv2.THRESH_BINARY, cv2.THRESH_TRUNC)
-        canny_img = cv2.Canny(thres_img,col_retval-col_pre_intv,col_retval+col_pre_intv)
-        seg_img = cv2.erode(canny_img,element)
-        #cv2.imshow(wn_color,canny_img)
-    if color == 1:
-        #cv2.namedWindow(wn_hsv, cv2.WINDOW_NORMAL)
-        blur_img = cv2.GaussianBlur(img, (9, 9), 0)
-        hsv_retval, thres_img = cv2.threshold(blur_img, 125, cv2.THRESH_BINARY, cv2.THRESH_TRUNC)
-        canny_img = cv2.Canny(blur_img,40,100)
-        seg_img = cv2.erode(canny_img,element)
-        #cv2.imshow(wn_hsv,canny_img)
-    if color == 2:
-        cv2.namedWindow(wn_gray, cv2.WINDOW_NORMAL)
-        blur_img = cv2.GaussianBlur(img, (3, 3), 0)
-        retval, thres_img = cv2.threshold(blur_img, 125, cv2.THRESH_BINARY,cv2.THRESH_OTSU)
-        canny_img = cv2.Canny(blur_img,40,100)
-        seg_img = cv2.erode(canny_img,element)
-        cv2.imshow(wn_gray,canny_img)
+    kernel = np.ones((5,5),np.uint8)
+    erosion21 = cv2.erode(green_mask,kernel,iterations = 1)
+    erosion3 = cv2.erode(th3,kernel,iterations = 1)
 
-    return canny_img
+    kernel2 = np.ones((3,3),np.uint8)
+    erosion2 = cv2.erode(erosion21,kernel2,iterations = 2)
+    erosion3 = cv2.erode(erosion3,kernel2,iterations = 2)
+
+    kernel3 = np.ones((7,7),np.uint8)
+    opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel3)
+
+    return opening
         
 
 # now that segmentaion is done it is time for 
