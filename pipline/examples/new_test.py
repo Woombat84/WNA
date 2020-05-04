@@ -118,9 +118,9 @@ def colorBin(img):
     scl_img = cv2.resize(img, (0,0), fx=0.5, fy=0.5) 
 
     h, s, v = cv2.split(scl_img)
-    h = h.reshape((h.shape[0]*h.shape[1],1))
-    s = s.reshape((s.shape[0]*s.shape[1],1))
-    v = v.reshape((v.shape[0]*v.shape[1],1))
+    h = h.reshape(h.shape[0]*h.shape[1],1)
+    s = s.reshape(s.shape[0]*s.shape[1],1)
+    v = v.reshape(v.shape[0]*v.shape[1],1)
     # fill up the bins
     
     for i in range(len(h)):
