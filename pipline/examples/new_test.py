@@ -101,12 +101,12 @@ def segmention(img,color):
 # feature extracting
 def colorBin(img):
     # find colors
-    color=[[sigma_low_lb_h, sigma_high_lb_h,sigma_low_lb_s, sigma_high_lb_s,sigma_low_lb_v, sigma_high_lb_v],
-           [sigma_low_db_h, sigma_high_db_h,sigma_low_db_s, sigma_high_db_s,sigma_low_db_v, sigma_high_db_v],
-           [sigma_low_lg_h, sigma_high_lg_h,sigma_low_lg_s, sigma_high_lg_s,sigma_low_lg_v, sigma_high_lg_v],
-           [sigma_low_mg_h, sigma_high_mg_h,sigma_low_mg_s, sigma_high_mg_s,sigma_low_mg_v, sigma_high_mg_v],
-           [sigma_low_dmg_h, sigma_high_dmg_h,sigma_low_dmg_s, sigma_high_dmg_s,sigma_low_dmg_v, sigma_high_dmg_v],
-           [sigma_low_dg_h, sigma_high_dg_h,sigma_low_dg_s, sigma_high_dg_s,sigma_low_dg_v, sigma_high_dg_v]]
+    color=[[90, 222,15, 24,68, 82],
+           [32,140,18, 31,53, 66],
+           [44, 49,157, 178,128, 174],
+           [57, 61,131, 172,74, 89],
+           [58, 60,148, 163,101,112],
+           [33, 40,46, 57,92, 111]]
     # bins initillaised 
     bin_lB=0
     bin_dB=0
@@ -119,10 +119,10 @@ def colorBin(img):
     # fill up the bins
     h, s, v = cv2.split(reshp_img)
     for i in range(len(h)):
-        if h[i]<=color[0][0] and h[i]>=color[0][1] and s[i]<=color[0][2]and s[i]>=color[0][3]and v[i]<= color[0][4] and v[i] >=color[0][5]:
+        if (h[i]>=color[0][0] or h[i]<=color[0][1]) and s[i]<=color[0][2]and s[i]>=color[0][3]and v[i]<= color[0][4] and v[i] >=color[0][5]:
             bin_lB +=1
 
-        if h[i]<=color[1][0] and h[i]>=color[1][1] and s[i]<=color[1][2]and s[i]>=color[1][3]and v[i]<= color[1][4] and v[i] >=color[1][5]:
+        if (h[i]>=color[1][0] or h[i]<=color[1][1]) and s[i]<=color[1][2]and s[i]>=color[1][3]and v[i]<= color[1][4] and v[i] >=color[1][5]:
             bin_dB +=1
 
         if h[i]<=color[2][0] and h[i]>=color[2][1] and s[i]<=color[2][2]and s[i]>=color[2][3]and v[i]<= color[2][4] and v[i] >=color[2][5]:
