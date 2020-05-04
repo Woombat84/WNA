@@ -137,7 +137,7 @@ def colorBin(img):
         if h[i]<=color[5][0] and h[i]>=color[5][1] and s[i]<=color[5][2]and s[i]>=color[5][3]and v[i]<= color[5][4] and v[i] >=color[5][5]:
             bin_dG +=1
 
-    return bin_lB,bin_dB,bin_lG,bin_mlG,bin_mG,bin_mdG,bin_dG
+    return bin_lB,bin_dB,bin_lG,bin_mG,bin_mdG,bin_dG
 
 def pixelCount(img):
     reshp_img = img.reshape((img.shape[0]*img.shape[1],1))
@@ -160,11 +160,10 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
     ligth_brown=0
     dark_brown=0
     light_green=0
-    medium_light_green=0
     medium_green=0
     medium_dark_green=0
     dark_green=0
-    #ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green = colorBin(hsv_img)
+    ligth_brown,dark_brown,light_green,medium_green,medium_dark_green,dark_green = colorBin(hsv_img)
    
     #find countures 
     #col_contours, col_hierarchy = cv2.findContours(bin_col,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
@@ -196,7 +195,7 @@ def feature_ex(col_img,hsv_img,bin_col,bin_hsv,bin_gray):
     #cv2.namedWindow(wn_skel, cv2.WINDOW_NORMAL)
     #cv2.imshow(wn_skel,skel_img)
     #cv2.waitKey(0)
-    lst_features=[arc_tot,area_tot,skel_tot,ligth_brown,dark_brown,light_green,medium_light_green,medium_green,medium_dark_green,dark_green]
+    lst_features=[arc_tot,area_tot,skel_tot,ligth_brown,dark_brown,light_green,medium_green,medium_dark_green,dark_green]
     return lst_features
 
 # now that the features are extracted, the features can be used for 
@@ -206,21 +205,20 @@ def save_data(lst,weednumber):
 
     try:
       sheet = pd.read_excel("./traning_data.xlsx",index_col=0)
-      print("traning file opened")
-      print(sheet.head())
+      #print("traning file opened")
+      #print(sheet.head())
       new_data=pd.DataFrame({'arc_tot': lst[0],
       'area_tot': lst[1],
       'skel_tot':lst[2],
       'ligth_brown':lst[3],
       'dark_brown':lst[4],
       'light_green':lst[5],
-      'medium_light_green':lst[6],
-      'medium_green': lst[7],
-      'medium_dark_green':lst[8],
-      'dark_green':lst[9],
+      'medium_green': lst[6],
+      'medium_dark_green':lst[7],
+      'dark_green':lst[8],
       'weed_number':[weednumber]})
       new_sheet=sheet.append(new_data, ignore_index=True)
-      print(new_sheet.head())
+      #print(new_sheet.head())
       writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
       new_sheet.to_excel(writer)
       writer.save()
@@ -233,7 +231,6 @@ def save_data(lst,weednumber):
       'ligth_brown':[lst[3]],
       'dark_brown':[lst[4]],
       'light_green':[lst[5]],
-      'medium_light_green':[lst[6]],
       'medium_green':[lst[7]],
       'medium_dark_green':[lst[8]],
       'dark_green':[lst[9]],
@@ -285,7 +282,7 @@ def weed_number(path,model):
     bin_hsv_img = segmention(hsv_img,1)
     bin_gray_img = segmention(gray_img,2)
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
-    x = [lst[0],lst[1],lst[2],lst[3],lst[4],lst[5],lst[6],lst[7],lst[8],lst[9]]
+    x = [lst[0],lst[1],lst[2],lst[3],lst[4],lst[5],lst[6],lst[7],lst[8]]
     X = np.array(x)
     x = x.reshape(-1, 1)
     WeedNumber = model.predict(X)
