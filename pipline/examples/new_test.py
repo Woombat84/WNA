@@ -249,7 +249,7 @@ def save_data(lst,weednumber):
 
     return
 
-# norm
+
 # classification
 
 
@@ -262,12 +262,12 @@ def traning_data():
 
     x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     y = df['weed_number']
-    
+    # norm
     x, y = np.array(x), np.array(y)
 
     x = x.reshape(-1, 1)
 
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
 
     model = LinearRegression().fit(X_train, y_train)
     r_sq = model.score(x, y) #R^2
@@ -305,8 +305,8 @@ def weed_number(path,model):
 def load_image(path):
     img = cv2.imread(path,cv2.IMREAD_COLOR)
     col_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    hsv_img= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray_img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     return col_img, hsv_img, gray_img
 
 # lists all dir in the folder
