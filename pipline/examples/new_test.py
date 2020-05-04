@@ -104,7 +104,6 @@ def colorBin(img):
     color=[[sigma_low_lb_h, sigma_high_lb_h,sigma_low_lb_s, sigma_high_lb_s,sigma_low_lb_v, sigma_high_lb_v],
            [sigma_low_db_h, sigma_high_db_h,sigma_low_db_s, sigma_high_db_s,sigma_low_db_v, sigma_high_db_v],
            [sigma_low_lg_h, sigma_high_lg_h,sigma_low_lg_s, sigma_high_lg_s,sigma_low_lg_v, sigma_high_lg_v],
-           [sigma_low_mlg_h, sigma_high_mlg_h,sigma_low_mlg_s, sigma_high_mlg_s,sigma_low_mlg_v, sigma_high_mlg_v],
            [sigma_low_mg_h, sigma_high_mg_h,sigma_low_mg_s, sigma_high_mg_s,sigma_low_mg_v, sigma_high_mg_v],
            [sigma_low_dmg_h, sigma_high_dmg_h,sigma_low_dmg_s, sigma_high_dmg_s,sigma_low_dmg_v, sigma_high_dmg_v],
            [sigma_low_dg_h, sigma_high_dg_h,sigma_low_dg_s, sigma_high_dg_s,sigma_low_dg_v, sigma_high_dg_v]]
@@ -112,7 +111,6 @@ def colorBin(img):
     bin_lB=0
     bin_dB=0
     bin_lG=0
-    bin_mlG=0
     bin_mG=0
     bin_mdG=0
     bin_dG=0
@@ -130,16 +128,13 @@ def colorBin(img):
         if h[i]<=color[2][0] and h[i]>=color[2][1] and s[i]<=color[2][2]and s[i]>=color[2][3]and v[i]<= color[2][4] and v[i] >=color[2][5]:
             bin_lG +=1
 
-        if h[i]<=color[3][0] and h[i]>=color[3][1] and s[i]<=color[3][2]and s[i]>=color[3][3]and v[i]<= color[3][4] and v[i] >=color[3][5]:
-            bin_mlG +=1
-
-        if h[i]<=color[4][0] and h[i]>=color[4][1] and s[i]<=color[4][2]and s[i]>=color[4][3]and v[i]<= color[4][4] and v[i] >=color[4][5]:
+        if h[i]<=color[4][0] and h[i]>=color[3][1] and s[i]<=color[3][2]and s[i]>=color[3][3]and v[i]<= color[3][4] and v[i] >=color[3][5]:
             bin_mG +=1
 
-        if h[i]<=color[5][0] and h[i]>=color[5][1] and s[i]<=color[5][2]and s[i]>=color[5][3]and v[i]<= color[5][4] and v[i] >=color[5][5]:
+        if h[i]<=color[4][0] and h[i]>=color[4][1] and s[i]<=color[4][2]and s[i]>=color[4][3]and v[i]<= color[4][4] and v[i] >=color[4][5]:
             bin_mdG +=1
 
-        if h[i]<=color[6][0] and h[i]>=color[6][1] and s[i]<=color[6][2]and s[i]>=color[6][3]and v[i]<= color[6][4] and v[i] >=color[6][5]:
+        if h[i]<=color[5][0] and h[i]>=color[5][1] and s[i]<=color[5][2]and s[i]>=color[5][3]and v[i]<= color[5][4] and v[i] >=color[5][5]:
             bin_dG +=1
 
     return bin_lB,bin_dB,bin_lG,bin_mlG,bin_mG,bin_mdG,bin_dG
