@@ -5,8 +5,8 @@ import cv2
 import time
 
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+#from sklearn.linear_model import LinearRegression
+#from sklearn.model_selection import train_test_split
 import pandas as pd
 import pickle
 
@@ -114,10 +114,15 @@ def colorBin(img):
     bin_mG=0
     bin_mdG=0
     bin_dG=0
+    
+    scl_img = cv2.resize(img, (0,0), fx=0.5, fy=0.5) 
 
-    reshp_img = img.reshape((img.shape[0]*img.shape[1],3))
+    h, s, v = cv2.split(scl_img)
+    h = h.reshape((h.shape[0]*h.shape[1],1))
+    s = s.reshape((s.shape[0]*s.shape[1],1))
+    v = v.reshape((v.shape[0]*v.shape[1],1))
     # fill up the bins
-    h, s, v = cv2.split(reshp_img)
+    
     for i in range(len(h)):
         if (h[i]>=color[0][0] or h[i]<=color[0][1]) and s[i]<=color[0][2]and s[i]>=color[0][3]and v[i]<= color[0][4] and v[i] >=color[0][5]:
             bin_lB +=1
@@ -136,7 +141,7 @@ def colorBin(img):
 
         if h[i]<=color[5][0] and h[i]>=color[5][1] and s[i]<=color[5][2]and s[i]>=color[5][3]and v[i]<= color[5][4] and v[i] >=color[5][5]:
             bin_dG +=1
-
+       # print('running: {}'.format(i))
     return bin_lB,bin_dB,bin_lG,bin_mG,bin_mdG,bin_dG
 
 def pixelCount(img):
@@ -297,8 +302,8 @@ def weed_number(path,model):
 def load_image(path):
     img = cv2.imread(path,cv2.IMREAD_COLOR)
     col_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) 
+    gray_img= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return col_img, hsv_img, gray_img
 
 # lists all dir in the folder
@@ -342,10 +347,10 @@ def main():
     bin_col_img = segmention(col_img,0)# tested done missing fine tuning
     bin_hsv_img = segmention(hsv_img,1)# tested done missing fine tuning
     bin_gray_img = segmention(gray_img,2)# tested done missing fine tuning
-    
+    cv2.waitKey(10)
     lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)# almost done need colorbin values and test
-    
-    # when ready release next line
+    print(lst)
+    # when ready release next lines
     # t1 = input(training? y for yes n for no :)
     # if == 'y':
     #   filename = 'WNA_model.sav'
@@ -364,6 +369,6 @@ if __name__ == "__main__":
     main()    
    
     #missing parts for now
-    #colorbin sigma color values 104-110
+   
     
     
