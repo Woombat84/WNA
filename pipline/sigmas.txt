@@ -1,0 +1,24 @@
+brown leaf:
+Hue: mean 36.418 std 3.171 min 18 max 53 mode 36
+Sat: mean 51.696 std 5.569 min 20 max 72 mode 49
+Bri: mean 101.52 std 9.437 min 53 max 122 mode 103
+darkgreen leaf:
+Hue: mean 58.548 std 0.910 min 55 max 60 mode 58
+Sat: mean 155.374 std 7.815 min 121 max 201 mode 153
+Bri: mean 106.198 std 5.344 min 81 max 121 mode 107
+green leaf:
+Hue: mean 59.042 std 1.761 min 48 max 64 mode 60
+Sat: mean 151.822 std 20.749 min 76 max 197 mode 162
+Bri: mean 81.653 std 7.681 min 58 max 97 mode 88
+lightgreen leaf:
+Hue: mean 46.390 std 2.934 min 39 max 55 mode 45
+Sat: mean 167.06 std 10.608 min 131 max 195 mode 170
+Bri: mean 150.856 std 22.640 min 106 max 184 mode 179
+darkdirt:
+Hue: mean 28.434 std 61.523 min 0 max 250 mode 8
+Sat: mean 19.621 std 4.65 min 10 max 43 mode 17
+Bri: mean 74.883 std 7.206 min 50 max 96mode 76
+dark brown dirt:
+Hue: mean 214.022 std 73.738 min 0 max 250 mode 240
+Sat: mean 24.469 std 6.282 min 13 max 52 mode 52
+Bri: mean 59.865 std 6.546 min 40 max 89 mode 58
