@@ -3,7 +3,7 @@
 
 import cv2
 import time
-
+import os
 import numpy as np
 #from sklearn.linear_model import LinearRegression
 #from sklearn.model_selection import train_test_split
@@ -191,9 +191,9 @@ def save_data(lst,weednumber):
       'ligth_brown':[lst[3]],
       'dark_brown':[lst[4]],
       'light_green':[lst[5]],
-      'medium_green':[lst[7]],
-      'medium_dark_green':[lst[8]],
-      'dark_green':[lst[9]],
+      'medium_green':[lst[6]],
+      'medium_dark_green':[lst[7]],
+      'dark_green':[lst[8]],
       'weed_number':[weednumber]})
       writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
       new_data.to_excel(writer)
@@ -237,9 +237,9 @@ def traning_data():
 
 # output a weed number on trained data
 def weed_number(path,model):
-    col_img, hsv_img, gray_img = load_image(path) 
-    bin_hsv_img = segmention(hsv_img)
-    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
+    col_img, hsv_img, gray_img = load_image(path) # testet done    
+    bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
+    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
     x = [lst[0],lst[1],lst[2],lst[3],lst[4],lst[5],lst[6],lst[7],lst[8]]
     X = np.array(x)
     x = x.reshape(-1, 1)
@@ -263,7 +263,7 @@ def load_image(path):
 # goes into each folder and listing each file
 # from here it is possible to iterate thourgh all 
 # images that needs classifying  
-def listDir(model,training=True):
+def listDir(model="",training=True):
     dirNames = os.listdir()
     retval = os.getcwd()
     
@@ -285,7 +285,7 @@ def listDir(model,training=True):
 
 def resipe(path,weedNumber):
     
-    col_img, hsv_img, gray_img = load_image(path) 
+ 
     col_img, hsv_img, gray_img = load_image(path) # testet done    
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
     lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
@@ -295,13 +295,14 @@ def resipe(path,weedNumber):
 def main():
     
     
-    # when ready release next lines
+    # when ready release next lines rember indents
     # t1 = input(training? y for yes n for no :)
     # if == 'y':
+    #   listDir()
+    #  else:
     #   filename = 'WNA_model.sav'
     #   model = pickle.load(open(filename, 'rb'))
-    #   listDir(model,True)
-    
+    #   listDir(model,False)
     # t2 = input(are we ready to create a model? y for yes n for no :)
     #if t2 =='y':
     #   traning_data() 

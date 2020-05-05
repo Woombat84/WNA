@@ -3,13 +3,13 @@
 
 import cv2
 import time
-
+import os
 import numpy as np
 #from sklearn.linear_model import LinearRegression
 #from sklearn.model_selection import train_test_split
 import pandas as pd
 import pickle
-
+import openpyxl
 import matplotlib.pyplot as plt
 
 
@@ -62,15 +62,12 @@ def segmention(img):
     img = cv2.GaussianBlur(green_mask, (9, 9), 0)
     img = cv2.bilateralFilter(img, 7, 100, 100)
 
-    Equal = cv2.equalizeHist(img[:,:])
-
-
     kernel = np.ones((5,5),np.uint8)
     erosion = cv2.erode(img,kernel,iterations = 1)
-
+    
     kernel2 = np.ones((3,3),np.uint8)
     erosion2 = cv2.erode(erosion,kernel2,iterations = 2)
-
+    
     kernel3 = np.ones((7,7),np.uint8)
     opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel3)
 
@@ -186,21 +183,7 @@ def save_data(lst,weednumber):
       new_sheet.to_excel(writer)
       writer.save()
     except:
-      sheet = pd.ExcelWriter('traningData.xlsx')
-      print("new file created")
-      new_data=pd.DataFrame({'arc_tot':[lst[0]],
-      'area_tot': [lst[1]],
-      'skel_tot':[lst[2]],
-      'ligth_brown':[lst[3]],
-      'dark_brown':[lst[4]],
-      'light_green':[lst[5]],
-      'medium_green':[lst[7]],
-      'medium_dark_green':[lst[8]],
-      'dark_green':[lst[9]],
-      'weed_number':[weednumber]})
-      writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
-      new_data.to_excel(writer)
-      writer.save()
+      print("faild to save")
 
     return
 
@@ -240,9 +223,9 @@ def traning_data():
 
 # output a weed number on trained data
 def weed_number(path,model):
-    col_img, hsv_img, gray_img = load_image(path) 
-    bin_hsv_img = segmention(hsv_img)
-    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
+    col_img, hsv_img, gray_img = load_image(path) # testet done    
+    bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
+    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
     x = [lst[0],lst[1],lst[2],lst[3],lst[4],lst[5],lst[6],lst[7],lst[8]]
     X = np.array(x)
     x = x.reshape(-1, 1)
@@ -266,18 +249,24 @@ def load_image(path):
 # goes into each folder and listing each file
 # from here it is possible to iterate thourgh all 
 # images that needs classifying  
-def listDir(model=Null,training=True):
+def listDir(model="" ,training=True):
     dirNames = os.listdir()
-    retval = os.getcwd()
+    
     
     for dirName in dirNames:
         counter = 1
-        _dir = os.path.abspath(dirName)
+        retval = os.getcwd()
+        
         dirSplit = str(dirName).split('_')
         weedNumber= dirSplit[0]
+        print(weedNumber)
+        print(os.getcwd())
         os.chdir(dirName)
+        
         fileNames = os.listdir()
         for fileName in fileNames:
+            currentdir=os.getcwd()
+            print("{}/{}".format(currentdir,fileName))
             if training == True:
                 resipe(fileName,weedNumber)
             if training == False:
@@ -288,7 +277,7 @@ def listDir(model=Null,training=True):
 
 def resipe(path,weedNumber):
     
-    col_img, hsv_img, gray_img = load_image(path) 
+ 
     col_img, hsv_img, gray_img = load_image(path) # testet done    
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
     lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
@@ -297,17 +286,20 @@ def resipe(path,weedNumber):
 
 def main():
     
+    
     # when ready release next lines
-    # t1 = input(training? y for yes n for no :)
-    # if == 'y':
-    #   listDir()
-    #  else:
-    #   filename = 'WNA_model.sav'
-    #   model = pickle.load(open(filename, 'rb'))
-    #   listDir(model,False)
-    # t2 = input(are we ready to create a model? y for yes n for no :)
-    #if t2 =='y':
-    #   traning_data() 
+    
+    t1=input('training? y for yes n for no :')
+    if t1 == 'y':
+       listDir()
+    else:
+       filename = 'WNA_model.sav'
+       model = pickle.load(open(filename, 'rb'))
+       listDir(model,False)
+    
+    t2=input('are we ready to create a model? y for yes n for no :')
+    if t2 =='y':
+       traning_data() 
 
     exit(1)
 
@@ -316,6 +308,7 @@ if __name__ == "__main__":
     # execute only if run as a script
     main()    
    
+    #missing parts for now
    
     
     
