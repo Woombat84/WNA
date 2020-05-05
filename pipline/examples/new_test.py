@@ -9,9 +9,9 @@ import numpy as np
 #from sklearn.model_selection import train_test_split
 import pandas as pd
 import pickle
-
+import openpyxl
 import matplotlib.pyplot as plt
-
+import pathlib
 
 
 def Skeletonizer(img):
@@ -161,12 +161,20 @@ def feature_ex(col_img,hsv_img,bin_img):
 # now that the features are extracted, the features can be used for 
 # either training or evealuting the weed number based on the tranined data
 # before this there is a need to save the data to a file that can be used to train on
-def save_data(lst,weednumber):
+def save_data(lst,weednumber,path):
+    
+    filename ="traning_data.xlsx"
+    filepath =os.path.join(path, filename)
+    p = pathlib.PureWindowsPath(filepath)
+    fp = os.fspath(p)
+    
+    #print(fp)
 
     try:
-      sheet = pd.read_excel("./traning_data.xlsx",index_col=0)
+      #print(lst[0])
+      sheet = pd.read_excel(fp,index_col=0)
       #print("traning file opened")
-      #print(sheet.head())
+      #print("old sheet  :  {}".format(sheet.head()))
       new_data=pd.DataFrame({'arc_tot': lst[0],
       'area_tot': lst[1],
       'skel_tot':lst[2],
@@ -178,26 +186,12 @@ def save_data(lst,weednumber):
       'dark_green':lst[8],
       'weed_number':[weednumber]})
       new_sheet=sheet.append(new_data, ignore_index=True)
-      #print(new_sheet.head())
-      writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
+      #print("new head  :  {}".format(new_sheet.head()))
+      writer = pd.ExcelWriter(fp,engine='openpyxl',index=False)
       new_sheet.to_excel(writer)
       writer.save()
     except:
-      sheet = pd.ExcelWriter('traningData.xlsx')
-      print("new file created")
-      new_data=pd.DataFrame({'arc_tot':[lst[0]],
-      'area_tot': [lst[1]],
-      'skel_tot':[lst[2]],
-      'ligth_brown':[lst[3]],
-      'dark_brown':[lst[4]],
-      'light_green':[lst[5]],
-      'medium_green':[lst[6]],
-      'medium_dark_green':[lst[7]],
-      'dark_green':[lst[8]],
-      'weed_number':[weednumber]})
-      writer = pd.ExcelWriter("./traning_data.xlsx",engine='openpyxl',index=False)
-      new_data.to_excel(writer)
-      writer.save()
+      print("faild to save")
 
     return
 
@@ -206,8 +200,8 @@ def save_data(lst,weednumber):
 
 
 # regresion training 
-def traning_data():
-    file = "./traning_data.xlsx"
+def traning_data(path):
+    file = "{}\traning_data.xlsx".format()
     df = pd.read_excel(file)
 
     print(df)
@@ -263,49 +257,57 @@ def load_image(path):
 # goes into each folder and listing each file
 # from here it is possible to iterate thourgh all 
 # images that needs classifying  
-def listDir(model="",training=True):
+def listDir(model="" ,training=True):
     dirNames = os.listdir()
-    retval = os.getcwd()
+    
     
     for dirName in dirNames:
         counter = 1
-        _dir = os.path.abspath(dirName)
+        retval = os.getcwd()
+        
         dirSplit = str(dirName).split('_')
         weedNumber= dirSplit[0]
+        print(weedNumber)
+        print(os.getcwd())
         os.chdir(dirName)
+        
         fileNames = os.listdir()
         for fileName in fileNames:
+            currentdir=os.getcwd()
+            print("{}\{}".format(currentdir,fileName))
             if training == True:
-                resipe(fileName,weedNumber)
+                resipe(fileName,weedNumber,retval)
             if training == False:
-                weed_number(fileName,model)
+                weed_number(fileName,model,retval)
             counter = counter + 1
             print(counter)         
         os.chdir(retval)
 
-def resipe(path,weedNumber):
+def resipe(path,weedNumber,fullpath):
     
  
     col_img, hsv_img, gray_img = load_image(path) # testet done    
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
     lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
-    save_data(lst,weedNumber)
+    save_data(lst,weedNumber,fullpath)
 
 
 def main():
     
     
-    # when ready release next lines rember indents
-    # t1 = input(training? y for yes n for no :)
-    # if == 'y':
-    #   listDir()
-    #  else:
-    #   filename = 'WNA_model.sav'
-    #   model = pickle.load(open(filename, 'rb'))
-    #   listDir(model,False)
-    # t2 = input(are we ready to create a model? y for yes n for no :)
-    #if t2 =='y':
-    #   traning_data() 
+    # when ready release next lines
+    
+    t1=input('training? y for yes n for no :')
+    if t1 == 'y':
+       listDir()
+    else:
+       filename = 'WNA_model.sav'
+       model = pickle.load(open(filename, 'rb'))
+       listDir(model,False)
+    
+    t2=input('are we ready to create a model? y for yes n for no :')
+    if t2 =='y':
+       traning_data() 
 
     exit(1)
 
