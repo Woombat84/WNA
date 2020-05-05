@@ -62,15 +62,13 @@ def segmention(img):
     img = cv2.GaussianBlur(green_mask, (9, 9), 0)
     img = cv2.bilateralFilter(img, 7, 100, 100)
 
-    Equal = cv2.equalizeHist(img[:,:])
+    equal = cv2.equalizeHist(img[:,:])
 
     kernel = np.ones((5,5),np.uint8)
-    erosion21 = cv2.erode(green_mask,kernel,iterations = 1)
-    erosion3 = cv2.erode(th3,kernel,iterations = 1)
+    erosion = cv2.erode(equal,kernel,iterations = 1)
 
     kernel2 = np.ones((3,3),np.uint8)
-    erosion2 = cv2.erode(erosion21,kernel2,iterations = 2)
-    erosion3 = cv2.erode(erosion3,kernel2,iterations = 2)
+    erosion2 = cv2.erode(erosion,kernel2,iterations = 2)
 
     kernel3 = np.ones((7,7),np.uint8)
     opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel3)
