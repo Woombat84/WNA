@@ -3,8 +3,8 @@
     "",
     "\\pipline",
     "\\pipline\\examples",
-    "\\vandStep"
+    "\\pipline\\examples\\output"
   ],
-  "SelectedNode": "\\vandStep\\step.py",
+  "SelectedNode": "\\pipline\\sigmas.xlsx",
   "PreviewInSolutionExplorer": false
 }

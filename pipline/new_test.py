@@ -290,15 +290,19 @@ def listDir(model,training=True):
 def resipe(path,weedNumber):
     
     col_img, hsv_img, gray_img = load_image(path) 
-    col_img, hsv_img, gray_img = load_image(path) # testet done    
-    bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
-    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
+    bin_col_img = segmention(col_img,0)
+    bin_hsv_img = segmention(hsv_img,1)
+    bin_gray_img = segmention(gray_img,2)
+    lst = feature_ex(col_img,hsv_img,bin_col_img,bin_hsv_img,bin_gray_img)
     save_data(lst,weedNumber)
 
 
 def main():
-    
-    
+    path = "C:\\Users\\WoomBat\\Aalborg Universitet\\Jonathan Eichild Schmidt - P6 - billeder\\cropped_weednumber_sorted\\10_04282020_01\\011.jpeg"
+    col_img, hsv_img, gray_img = load_image(path) # testet done    
+    bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
+    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
+    print(lst)
     # when ready release next lines
     # t1 = input(training? y for yes n for no :)
     # if == 'y':
