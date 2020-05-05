@@ -62,10 +62,8 @@ def segmention(img):
     img = cv2.GaussianBlur(green_mask, (9, 9), 0)
     img = cv2.bilateralFilter(img, 7, 100, 100)
 
-    equal = cv2.equalizeHist(img[:,:])
-
     kernel = np.ones((5,5),np.uint8)
-    erosion = cv2.erode(equal,kernel,iterations = 1)
+    erosion = cv2.erode(img,kernel,iterations = 1)
 
     kernel2 = np.ones((3,3),np.uint8)
     erosion2 = cv2.erode(erosion,kernel2,iterations = 2)
