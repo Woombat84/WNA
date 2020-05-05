@@ -64,13 +64,12 @@ def segmention(img):
 
     Equal = cv2.equalizeHist(img[:,:])
 
+
     kernel = np.ones((5,5),np.uint8)
-    erosion21 = cv2.erode(green_mask,kernel,iterations = 1)
-    
+    erosion = cv2.erode(img,kernel,iterations = 1)
 
     kernel2 = np.ones((3,3),np.uint8)
-    erosion2 = cv2.erode(erosion21,kernel2,iterations = 2)
-    
+    erosion2 = cv2.erode(erosion,kernel2,iterations = 2)
 
     kernel3 = np.ones((7,7),np.uint8)
     opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel3)
