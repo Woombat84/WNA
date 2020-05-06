@@ -204,26 +204,32 @@ def traning_data(path):
     file = "{}\traning_data.xlsx".format()
     df = pd.read_excel(file)
 
-    print(df)
-
-    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
+    x = [df['arc_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     y = df['weed_number']
-    # norm
     x, y = np.array(x), np.array(y)
 
-    x = x.reshape(-1, 1)
+    min = np.amin(x, axis=0)
+    max = np.amax(x, axis=0)
+    x_norm = np.zeros(x.shape)
 
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
+    for i in range(x.shape[0]):
+        x_norm[i] = (x[i]-min)/(max-min)
+
+    x_norm = x_norm.transpose()
+    X_train, X_test, y_train, y_test = train_test_split(x_norm, y, test_size=0.33, random_state=42)
 
     model = LinearRegression().fit(X_train, y_train)
-    r_sq = model.score(x, y) #R^2
-
+    r_sq = model.score(x_norm, y) #R^2
     print("R^2: ",r_sq)
-
     y_pred = model.predict(X_test)
 
-    print("Predicted values: ", y_pred)
-    print("Actual values: ", y_test)
+    error = 0
+    for i in range(y_pred.shape[0]):
+        #print("Error: ", y_pred[i]-y_test[i])
+        error += math.sqrt((y_pred[i]-y_test[i])**2)
+
+    error = error/len(y_pred)
+    print("Average error: ", error)
 
     filename = 'WNA_model.sav'
     pickle.dump(model, open(filename, 'wb'))
