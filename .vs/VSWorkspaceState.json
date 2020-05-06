@@ -3,8 +3,8 @@
     "",
     "\\pipline",
     "\\pipline\\examples",
-    "\\pipline\\examples\\output"
+    "\\pipline\\traning_data"
   ],
-  "SelectedNode": "\\pipline\\examples\\Histogram.py",
+  "SelectedNode": "\\pipline\\traning_data\\new_test.py",
   "PreviewInSolutionExplorer": false
 }
