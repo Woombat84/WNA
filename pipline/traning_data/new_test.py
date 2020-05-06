@@ -304,10 +304,10 @@ def main():
     
     # when ready release next lines
     
-    t1=input('training? y for yes n for no :')
+    t1=input('training? y for yes n for no any thing else to skip:')
     if t1 == 'y':
        listDir()
-    else:
+    if t1 == 'n':
        filename = 'WNA_model.sav'
        model = pickle.load(open(filename, 'rb'))
        listDir(model,False)
