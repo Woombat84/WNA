@@ -201,12 +201,12 @@ def save_data(lst,weednumber,path):
 
 # regresion training 
 def traning_data(path):
-    file = "{}\traning_data.xlsx".format()
+    file = "{}\traning_data.xlsx".format(path)
     df = pd.read_excel(file)
 
     print(df)
 
-    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
+    x = [df['arc_tot'],df['area_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     y = df['weed_number']
     # norm
     x, y = np.array(x), np.array(y)
@@ -298,10 +298,10 @@ def main():
     
     # when ready release next lines
     
-    t1=input('training? y for yes n for no :')
+    t1=input('training? y for yes n for no any thing else to skip:')
     if t1 == 'y':
        listDir()
-    else:
+    if t1 == 'n':
        filename = 'WNA_model.sav'
        model = pickle.load(open(filename, 'rb'))
        listDir(model,False)
