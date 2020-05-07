@@ -80,92 +80,37 @@ def segmention(img):
 # feature extracting
 def colorBin(img,lst):
  
-    low1 = np.array([0, 30, 30])
-    high1 = np.array([10, 255, 255])
-    bin1_mask = cv2.inRange(img, low1, high1)
-    lst.append(cv2.countNonZero(bin1_mask))
+    low_bin_lB = np.array([140, 18, 53])
+    high_bin_lB = np.array([33, 31, 66])
+    bin_lB_mask = cv2.inRange(img, low_bin_lB, high_bin_lB)
+    lst.append(cv2.countNonZero(bin_lB_mask))
 
-    low2 = np.array([11, 30, 30])
-    high2 = np.array([20, 255, 255])
-    bin2_mask = cv2.inRange(img, low2, high2)
-    lst.append(cv2.countNonZero(bin2_mask))
+    low_bin_dB = np.array([90,15,68])
+    high_bin_dB = np.array([223,24,82])
+    bin_dB_mask = cv2.inRange(img, low_bin_dB, high_bin_dB)
+    lst.append(cv2.countNonZero(bin_dB_mask))
 
-    low3 = np.array([21, 30, 30])
-    high3 = np.array([30, 255, 255])
-    bin3_mask = cv2.inRange(img, low3, high3)
-    lst.append(cv2.countNonZero(bin3_mask))
+    low_bin_lG = np.array([41,146,106])
+    high_bin_lG = np.array([52,188,196])
+    bin_lG_mask = cv2.inRange(img, low_bin_lG, high_bin_lG)
+    lst.append(cv2.countNonZero(bin_lG_mask))
 
-    low4 = np.array([41, 30, 30])
-    high4 = np.array([50, 255, 255])
-    bin4_mask = cv2.inRange(img, low4, high4)
-    lst.append(cv2.countNonZero(bin4_mask))
+    low_bin_mG = np.array([56,110,66])
+    high_bin_mG = np.array([63,193,97])
+    bin_mG_mask = cv2.inRange(img, low_bin_mG, high_bin_mG)
+    lst.append(cv2.countNonZero(bin_mG_mask))
+ 
+    low_bin_mdG = np.array([57,140,95])
+    high_bin_mdG = np.array([60,171,117])
+    bin_mdG_mask = cv2.inRange(img, low_bin_mdG, high_bin_mdG)
+    lst.append(cv2.countNonZero(bin_mdG_mask))
 
-    low5 = np.array([51, 30, 30])
-    high5 = np.array([60, 255, 255])
-    bin5_mask = cv2.inRange(img, low5, high5)
-    lst.append(cv2.countNonZero(bin5_mask))
-
-    low6 = np.array([61, 30, 30])
-    high6 = np.array([70, 255, 255])
-    bin6_mask = cv2.inRange(img, low6, high6)
-    lst.append(cv2.countNonZero(bin6_mask))
-
-    low7 = np.array([71, 30, 30])
-    high7 = np.array([80, 255, 255])
-    bin7_mask = cv2.inRange(img, low7, high7)
-    lst.append(cv2.countNonZero(bin7_mask))
-
-    low8 = np.array([81, 30, 30])
-    high8 = np.array([90, 255, 255])
-    bin8_mask = cv2.inRange(img, low8, high8)
-    lst.append(cv2.countNonZero(bin8_mask))
-
-    low9 = np.array([91, 30, 30])
-    high9 = np.array([100, 255, 255])
-    bin9_mask = cv2.inRange(img, low9, high9)
-    lst.append(cv2.countNonZero(bin9_mask))
-
-    low10 = np.array([101, 30, 30])
-    high10 = np.array([110, 255, 255])
-    bin10_mask = cv2.inRange(img, low10, high10)
-    lst.append(cv2.countNonZero(bin10_mask))
-
-    low11 = np.array([111, 30, 30])
-    high11 = np.array([120, 255, 255])
-    bin11_mask = cv2.inRange(img, low11, high11)
-    lst.append(cv2.countNonZero(bin11_mask))
-
-    low12 = np.array([121, 30, 30])
-    high12 = np.array([130, 255, 255])
-    bin12_mask = cv2.inRange(img, low12, high12)
-    lst.append( cv2.countNonZero(bin12_mask))
-
-    low13 = np.array([131, 30, 30])
-    high13 = np.array([140, 255, 255])
-    bin13_mask = cv2.inRange(img, low13, high13)
-    lst.append(cv2.countNonZero(bin13_mask))
-
-    low14 = np.array([141, 30, 30])
-    high14 = np.array([150, 255, 255])
-    bin14_mask = cv2.inRange(img, low14, high14)
-    lst.append(cv2.countNonZero(bin14_mask))
-
-    low15 = np.array([151, 30, 30])
-    high15 = np.array([160, 255, 255])
-    bin15_mask = cv2.inRange(img, low15, high15)
-    lst.append(cv2.countNonZero(bin15_mask))
-
-    low16 = np.array([161, 30, 30])
-    high16 = np.array([170, 255, 255])
-    bin16_mask = cv2.inRange(img, low16, high16)
-    lst.append(cv2.countNonZero(bin16_mask))
-
-    low17 = np.array([171, 30, 30])
-    high17 = np.array([179, 255, 255])
-    bin17_mask = cv2.inRange(img, low17, high17)
-    lst.append(cv2.countNonZero(bin17_mask))
-
-
+    low_bin_dG = np.array([30,41,83])
+    high_bin_dG = np.array([43,63,120])
+    bin_dG_mask = cv2.inRange(img, low_bin_dG, high_bin_dG)
+    lst.append(cv2.countNonZero(bin_dG_mask))
+    
+    
     return lst
 
 def pixelCount(img):
@@ -182,14 +127,11 @@ def pixelCount(img):
 # image, and returns a list of features colorsRGB, colorsHSV,
 # perimeter length and area further investigation skeleton features.
 
-def feature_ex(col_img,hsv_img,gray_img,bin_img):
+def feature_ex(col_img,hsv_img,bin_img):
     # find colors
     # fill up the bins 
     lst_features=[]
-    kernel = (3,3)
-    sigma = 2
-    blur_gray = cv2.GaussianBlur(gray_img,kernel,sigma,cv2.BORDER_WRAP)
-    lst_features.append(cv2.countNonZero(cv2.Canny(blur_gray,65,255)))
+    
    
     #find countures 
    
@@ -361,7 +303,7 @@ def resipe(path,weedNumber,fullpath):
  
     col_img, hsv_img, gray_img = load_image(path) # testet done    
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
-    lst = feature_ex(col_img,hsv_img,gray_img,bin_hsv_img)# almost done need colorbin values and test
+    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
     lst.append(weedNumber)
     save_data(lst,fullpath)
 
