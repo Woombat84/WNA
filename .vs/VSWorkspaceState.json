@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\pipline",
-    "\\pipline\\examples"
+    "\\pipline\\examples",
+    "\\pipline\\traning_data"
   ],
-  "SelectedNode": "\\pipline\\examples",
+  "SelectedNode": "\\pipline\\traning_data\\new_test.py",
   "PreviewInSolutionExplorer": false
 }
