@@ -3,8 +3,9 @@
     "",
     "\\pipline",
     "\\pipline\\examples",
-    "\\pipline\\traning_data"
+    "\\pipline\\traning_data",
+    "\\pipline\\traning_data\\17binsTest"
   ],
-  "SelectedNode": "\\pipline\\traning_data\\new_test.py",
+  "SelectedNode": "\\pipline\\traning_data\\17binsTest\\ColourTest.py",
   "PreviewInSolutionExplorer": false
 }

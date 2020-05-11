@@ -15,9 +15,6 @@ import pathlib
 
 
 def Skeletonizer(img):
-
-    if img.shape[2] != 1:
-       img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
     size = np.size(img)
     skel = np.zeros(img.shape,np.uint8)
@@ -54,22 +51,23 @@ def Skeletonizer(img):
 # depened on what representation the image
 # is in the output is a binary image. 
 def segmention(img):
+
+    #Blurring
+    img = cv2.GaussianBlur(green_mask, (9, 9), 0)
+    img = cv2.bilateralFilter(img, 7, 100, 100)
+
     # Green color
     low_green = np.array([30, 30, 40])
     high_green = np.array([100, 255, 255])
     green_mask = cv2.inRange(img, low_green, high_green)
 
-    img = cv2.GaussianBlur(green_mask, (9, 9), 0)
-    img = cv2.bilateralFilter(img, 7, 100, 100)
-
     kernel = np.ones((5,5),np.uint8)
-    erosion = cv2.erode(img,kernel,iterations = 1)
-    
+    erosion = cv2.erode(green_mask,kernel,iterations = 1)
+
     kernel2 = np.ones((3,3),np.uint8)
-    erosion2 = cv2.erode(erosion,kernel2,iterations = 2)
-    
-    kernel3 = np.ones((7,7),np.uint8)
-    opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel3)
+    erosion2 = cv2.erode(erosion,kernel2,iterations = 1)
+
+    opening = cv2.morphologyEx(erosion2, cv2.MORPH_OPEN, kernel)
 
     return opening
         
@@ -206,7 +204,7 @@ def feature_ex(col_img,hsv_img,bin_img):
     
     
     # skeleton
-    skel_img = Skeletonizer(col_img)
+    skel_img = Skeletonizer(bin_img)
     skel_tot = cv2.countNonZero(skel_img)
     
     lst_features=[arc_tot,area_tot,skel_tot, bin1, bin2, bin3, bin4, bin5, bin6, bin7, bin8, bin9, bin10, bin11, bin12, bin13, bin14, bin15, bin16, bin17]
