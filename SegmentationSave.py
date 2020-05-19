@@ -3,6 +3,8 @@ import numpy as np
 
 img = cv2.imread("./image.jpg")
 
+img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
 img = cv2.GaussianBlur(img, (9, 9), 0)
 img = cv2.bilateralFilter(img, 7, 100, 100)
 
