@@ -80,36 +80,90 @@ def segmention(img):
 # feature extracting
 def colorBin(img,lst):
  
-    low_bin_lB = np.array([140, 18, 53])
-    high_bin_lB = np.array([33, 31, 66])
-    bin_lB_mask = cv2.inRange(img, low_bin_lB, high_bin_lB)
-    lst.append(cv2.countNonZero(bin_lB_mask))
+    low1 = np.array([0, 30, 30])
+    high1 = np.array([10, 255, 255])
+    bin1_mask = cv2.inRange(img, low1, high1)
+    lst.append(cv2.countNonZero(bin1_mask))
 
-    low_bin_dB = np.array([90,15,68])
-    high_bin_dB = np.array([223,24,82])
-    bin_dB_mask = cv2.inRange(img, low_bin_dB, high_bin_dB)
-    lst.append(cv2.countNonZero(bin_dB_mask))
+    low2 = np.array([11, 30, 30])
+    high2 = np.array([20, 255, 255])
+    bin2_mask = cv2.inRange(img, low2, high2)
+    lst.append(cv2.countNonZero(bin2_mask))
 
-    low_bin_lG = np.array([41,146,106])
-    high_bin_lG = np.array([52,188,196])
-    bin_lG_mask = cv2.inRange(img, low_bin_lG, high_bin_lG)
-    lst.append(cv2.countNonZero(bin_lG_mask))
+    low3 = np.array([21, 30, 30])
+    high3 = np.array([30, 255, 255])
+    bin3_mask = cv2.inRange(img, low3, high3)
+    lst.append(cv2.countNonZero(bin3_mask))
 
-    low_bin_mG = np.array([56,110,66])
-    high_bin_mG = np.array([63,193,97])
-    bin_mG_mask = cv2.inRange(img, low_bin_mG, high_bin_mG)
-    lst.append(cv2.countNonZero(bin_mG_mask))
- 
-    low_bin_mdG = np.array([57,140,95])
-    high_bin_mdG = np.array([60,171,117])
-    bin_mdG_mask = cv2.inRange(img, low_bin_mdG, high_bin_mdG)
-    lst.append(cv2.countNonZero(bin_mdG_mask))
+    low4 = np.array([41, 30, 30])
+    high4 = np.array([50, 255, 255])
+    bin4_mask = cv2.inRange(img, low4, high4)
+    lst.append(cv2.countNonZero(bin4_mask))
 
-    low_bin_dG = np.array([30,41,83])
-    high_bin_dG = np.array([43,63,120])
-    bin_dG_mask = cv2.inRange(img, low_bin_dG, high_bin_dG)
-    lst.append(cv2.countNonZero(bin_dG_mask))
-    
+    low5 = np.array([51, 30, 30])
+    high5 = np.array([60, 255, 255])
+    bin5_mask = cv2.inRange(img, low5, high5)
+    lst.append(cv2.countNonZero(bin5_mask))
+
+    low6 = np.array([61, 30, 30])
+    high6 = np.array([70, 255, 255])
+    bin6_mask = cv2.inRange(img, low6, high6)
+    lst.append(cv2.countNonZero(bin6_mask))
+
+    low7 = np.array([71, 30, 30])
+    high7 = np.array([80, 255, 255])
+    bin7_mask = cv2.inRange(img, low7, high7)
+    lst.append(cv2.countNonZero(bin7_mask))
+
+    low8 = np.array([81, 30, 30])
+    high8 = np.array([90, 255, 255])
+    bin8_mask = cv2.inRange(img, low8, high8)
+    lst.append(cv2.countNonZero(bin8_mask))
+
+    low9 = np.array([91, 30, 30])
+    high9 = np.array([100, 255, 255])
+    bin9_mask = cv2.inRange(img, low9, high9)
+    lst.append(cv2.countNonZero(bin9_mask))
+
+    low10 = np.array([101, 30, 30])
+    high10 = np.array([110, 255, 255])
+    bin10_mask = cv2.inRange(img, low10, high10)
+    lst.append(cv2.countNonZero(bin10_mask))
+
+    low11 = np.array([111, 30, 30])
+    high11 = np.array([120, 255, 255])
+    bin11_mask = cv2.inRange(img, low11, high11)
+    lst.append(cv2.countNonZero(bin11_mask))
+
+    low12 = np.array([121, 30, 30])
+    high12 = np.array([130, 255, 255])
+    bin12_mask = cv2.inRange(img, low12, high12)
+    lst.append( cv2.countNonZero(bin12_mask))
+
+    low13 = np.array([131, 30, 30])
+    high13 = np.array([140, 255, 255])
+    bin13_mask = cv2.inRange(img, low13, high13)
+    lst.append(cv2.countNonZero(bin13_mask))
+
+    low14 = np.array([141, 30, 30])
+    high14 = np.array([150, 255, 255])
+    bin14_mask = cv2.inRange(img, low14, high14)
+    lst.append(cv2.countNonZero(bin14_mask))
+
+    low15 = np.array([151, 30, 30])
+    high15 = np.array([160, 255, 255])
+    bin15_mask = cv2.inRange(img, low15, high15)
+    lst.append(cv2.countNonZero(bin15_mask))
+
+    low16 = np.array([161, 30, 30])
+    high16 = np.array([170, 255, 255])
+    bin16_mask = cv2.inRange(img, low16, high16)
+    lst.append(cv2.countNonZero(bin16_mask))
+
+    low17 = np.array([171, 30, 30])
+    high17 = np.array([179, 255, 255])
+    bin17_mask = cv2.inRange(img, low17, high17)
+    lst.append(cv2.countNonZero(bin17_mask))
     
     return lst
 
@@ -196,34 +250,45 @@ def traning_data():
     lst = genfromtxt(filename, delimiter=',')
     new_lst = np.transpose(lst)
     new_lst = new_lst.astype(int)
-    x = new_lst[0:new_lst.shape[0]-1] 
+    x = new_lst[0:new_lst.shape[0]-1]
     y = new_lst[new_lst.shape[0]-1] 
     #x = [df['arc_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     #y = df['weed_number']
     #x, y = np.array(x), np.array(y)
-    x, y = np.array(x), np.array(y)
+    x, y = np.array(x.transpose()), np.array(y.transpose())
     min = np.amin(x, axis=0)
     max = np.amax(x, axis=0)
+  
     x_norm = np.zeros(x.shape)
-
+    np.seterr(divide='ignore', invalid='ignore')
     for i in range(x.shape[0]):
         x_norm[i] = (x[i]-min)/(max-min)
 
-    x_norm = x_norm.transpose()
+    x_norm = np.nan_to_num(x_norm)
     X_train, X_test, y_train, y_test = train_test_split(x_norm, y, test_size=0.33, random_state=42)
-
     model = LinearRegression().fit(X_train, y_train)
     r_sq = model.score(x_norm, y) #R^2
     print("R^2: ",r_sq)
     y_pred = model.predict(X_test)
-
+    
     error = 0
+    err=np.zeros(y_pred.shape)
     for i in range(y_pred.shape[0]):
         #print("Error: ", y_pred[i]-y_test[i])
         error += math.sqrt((y_pred[i]-y_test[i])**2)
+        err[i] = math.sqrt((y_pred[i]-y_test[i])**2)
 
     error = error/len(y_pred)
+    df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred, 'Error' : err})
+    minError = np.amin(err)
+    maxError = np.amax(err)
     print("Average error: ", error)
+    print('Mean:', np.mean(err))
+    print('Standard Deviation:', np.std(err))
+    strOutput ="Max error: {} Min error: {} Avg error: {} Mean error: {} std: {} R^2: {}".format(maxError,minError,error,np.mean(err),np.std(err),r_sq)
+    with open("test_result.txt",'a') as nf:
+        nf.write(strOutput)
+    df.to_excel("test_data.xlsx")
     np.savetxt('max.npy', max, fmt='%d')
     np.savetxt('min.npy', min, fmt='%d')
     filename = 'WNA_model.sav'
@@ -236,17 +301,22 @@ def weed_number(path,model,fullpath):
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
     lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
     x = np.array(lst)
-    max = np.loadtxt('max.npy')
-    min = np.loadtxt('min.npy')
+    maxPath =os.path.join(fullpath, 'max.npy')
+    minPath =os.path.join(fullpath, 'min.npy')
+    max = np.loadtxt(maxPath)
+    min = np.loadtxt(minPath)
+
     x_norm = np.zeros(x.shape)
-    for i in range(lst.shape[0]):
-        x_norm = (x-min)/(max-min)
-   
+    np.seterr(divide='ignore', invalid='ignore')
+    x_norm = (x-min)/(max-min)
+    
+    x_norm = np.nan_to_num(x_norm)
+
     
     WeedNumberScore = model.predict(x_norm)
 
-    filename ="traning_data.csv"
-    filepath =os.path.join(path, filename)
+    filename ="test_data.csv"
+    filepath =os.path.join(fullpath, filename)
     p = pathlib.PureWindowsPath(filepath)
     fp = os.fspath(p)
     with open(p,'a') as nf:

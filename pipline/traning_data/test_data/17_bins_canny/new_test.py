@@ -254,34 +254,45 @@ def traning_data():
     lst = genfromtxt(filename, delimiter=',')
     new_lst = np.transpose(lst)
     new_lst = new_lst.astype(int)
-    x = new_lst[0:new_lst.shape[0]-1] 
+    x = new_lst[0:new_lst.shape[0]-1]
     y = new_lst[new_lst.shape[0]-1] 
     #x = [df['arc_tot'],df['skel_tot'],df['ligth_brown'],df['dark_brown'],df['light_green'],df['medium_green'],df['medium_dark_green'],df['dark_green']]
     #y = df['weed_number']
     #x, y = np.array(x), np.array(y)
-    x, y = np.array(x), np.array(y)
+    x, y = np.array(x.transpose()), np.array(y.transpose())
     min = np.amin(x, axis=0)
     max = np.amax(x, axis=0)
+  
     x_norm = np.zeros(x.shape)
-
+    np.seterr(divide='ignore', invalid='ignore')
     for i in range(x.shape[0]):
         x_norm[i] = (x[i]-min)/(max-min)
 
-    x_norm = x_norm.transpose()
+    x_norm = np.nan_to_num(x_norm)
     X_train, X_test, y_train, y_test = train_test_split(x_norm, y, test_size=0.33, random_state=42)
-
     model = LinearRegression().fit(X_train, y_train)
     r_sq = model.score(x_norm, y) #R^2
     print("R^2: ",r_sq)
     y_pred = model.predict(X_test)
-
+    
     error = 0
+    err=np.zeros(y_pred.shape)
     for i in range(y_pred.shape[0]):
         #print("Error: ", y_pred[i]-y_test[i])
         error += math.sqrt((y_pred[i]-y_test[i])**2)
+        err[i] = math.sqrt((y_pred[i]-y_test[i])**2)
 
     error = error/len(y_pred)
+    df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred, 'Error' : err})
+    minError = np.amin(err)
+    maxError = np.amax(err)
     print("Average error: ", error)
+    print('Mean:', np.mean(err))
+    print('Standard Deviation:', np.std(err))
+    strOutput ="Max error: {} Min error: {} Avg error: {} Mean error: {} std: {} R^2: {}".format(maxError,minError,error,np.mean(err),np.std(err),r_sq)
+    with open("test_result.txt",'a') as nf:
+        nf.write(strOutput)
+    df.to_excel("test_data.xlsx")
     np.savetxt('max.npy', max, fmt='%d')
     np.savetxt('min.npy', min, fmt='%d')
     filename = 'WNA_model.sav'
@@ -294,17 +305,22 @@ def weed_number(path,model,fullpath):
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
     lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
     x = np.array(lst)
-    max = np.loadtxt('max.npy')
-    min = np.loadtxt('min.npy')
+    maxPath =os.path.join(fullpath, 'max.npy')
+    minPath =os.path.join(fullpath, 'min.npy')
+    max = np.loadtxt(maxPath)
+    min = np.loadtxt(minPath)
+
     x_norm = np.zeros(x.shape)
-    for i in range(lst.shape[0]):
-        x_norm = (x-min)/(max-min)
-   
+    np.seterr(divide='ignore', invalid='ignore')
+    x_norm = (x-min)/(max-min)
+    
+    x_norm = np.nan_to_num(x_norm)
+
     
     WeedNumberScore = model.predict(x_norm)
 
-    filename ="traning_data.csv"
-    filepath =os.path.join(path, filename)
+    filename ="test_data.csv"
+    filepath =os.path.join(fullpath, filename)
     p = pathlib.PureWindowsPath(filepath)
     fp = os.fspath(p)
     with open(p,'a') as nf:
