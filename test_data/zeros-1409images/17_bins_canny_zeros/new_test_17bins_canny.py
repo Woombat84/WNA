@@ -18,6 +18,9 @@ import math
 
 def Skeletonizer(img):
 
+    if img.shape[2] != 1:
+       img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
     size = np.size(img)
     skel = np.zeros(img.shape,np.uint8)
 
@@ -36,8 +39,6 @@ def Skeletonizer(img):
         zeros = size - cv2.countNonZero(img)
         if zeros==size:
             done = True
-    
-
     
 
     
@@ -212,7 +213,7 @@ def feature_ex(col_img,hsv_img,gray_img,bin_img):
     lst_features.append(int(area_tot))
     lst_features.append(int(arc_tot))
     # skeleton
-    skel_img = Skeletonizer(bin_img)
+    skel_img = Skeletonizer(col_img)
     lst_features.append(cv2.countNonZero(skel_img))
     lst_features = colorBin(hsv_img,lst_features)
     
