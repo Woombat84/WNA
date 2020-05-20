@@ -164,7 +164,8 @@ def colorBin(img,lst):
     high17 = np.array([179, 255, 255])
     bin17_mask = cv2.inRange(img, low17, high17)
     lst.append(cv2.countNonZero(bin17_mask))
-    
+
+
     return lst
 
 def pixelCount(img):
@@ -181,11 +182,14 @@ def pixelCount(img):
 # image, and returns a list of features colorsRGB, colorsHSV,
 # perimeter length and area further investigation skeleton features.
 
-def feature_ex(col_img,hsv_img,bin_img):
+def feature_ex(col_img,hsv_img,gray_img,bin_img):
     # find colors
     # fill up the bins 
     lst_features=[]
-    
+    kernel = (3,3)
+    sigma = 2
+    blur_gray = cv2.GaussianBlur(gray_img,kernel,sigma,cv2.BORDER_WRAP)
+    lst_features.append(cv2.countNonZero(cv2.Canny(blur_gray,65,255)))
    
     #find countures 
    
@@ -220,7 +224,7 @@ def feature_ex(col_img,hsv_img,bin_img):
 # before this there is a need to save the data to a file that can be used to train on
 def save_data(lst,path):
     
-    filename ="traning_data1.csv"
+    filename ="traning_data.csv"
     filepath =os.path.join(path, filename)
     p = pathlib.PureWindowsPath(filepath)
     fp = os.fspath(p)
@@ -373,7 +377,7 @@ def resipe(path,weedNumber,fullpath):
  
     col_img, hsv_img, gray_img = load_image(path) # testet done    
     bin_hsv_img = segmention(hsv_img)# tested done missing fine tuning
-    lst = feature_ex(col_img,hsv_img,bin_hsv_img)# almost done need colorbin values and test
+    lst = feature_ex(col_img,hsv_img,gray_img,bin_hsv_img)# almost done need colorbin values and test
     lst.append(weedNumber)
     save_data(lst,fullpath)
 
