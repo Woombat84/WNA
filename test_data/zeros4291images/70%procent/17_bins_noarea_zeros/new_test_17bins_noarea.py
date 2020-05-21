@@ -206,7 +206,7 @@ def feature_ex(col_img,hsv_img,bin_img):
         #print("arc : {}".format(arc_retval))
         arc_tot+=arc_retval
     
-    lst_features.append(int(area_tot))
+    #lst_features.append(int(area_tot))
     lst_features.append(int(arc_tot))
     # skeleton
     skel_img = Skeletonizer(col_img)
