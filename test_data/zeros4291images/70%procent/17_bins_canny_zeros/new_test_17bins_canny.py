@@ -213,8 +213,8 @@ def feature_ex(col_img,hsv_img,gray_img,bin_img):
     lst_features.append(int(area_tot))
     lst_features.append(int(arc_tot))
     # skeleton
-    skel_img = Skeletonizer(col_img)
-    lst_features.append(cv2.countNonZero(skel_img))
+    #skel_img = Skeletonizer(col_img)
+    #lst_features.append(cv2.countNonZero(skel_img))
     lst_features = colorBin(hsv_img,lst_features)
     
     return lst_features
