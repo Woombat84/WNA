@@ -186,9 +186,7 @@ def setup():
     #Orientation
     goproCamera.gpControlSet(constants.Setup.ORIENTATION,
                             constants.Setup.Orientation.Auto)
-    #turning off display
-    goproCamera.gpControlSet(constants.Setup.DISPLAY,
-                            constants.Setup.Display.OFF)
+   
 
     #autooff
     goproCamera.gpControlSet(constants.Setup.AUTO_OFF,

@@ -1,3 +1,8 @@
 # WNA
-weed number analyzer
-[![Run on Repl.it](https://repl.it/badge/github/Woombat84/WNA)](https://repl.it/github/Woombat84/WNA)
+Weed Number Analyzer
+
+This project is used to est. the weed number in danish waterways, derived from photos it is written in python.'
+
+The project folders are structured as following:
+
+##
