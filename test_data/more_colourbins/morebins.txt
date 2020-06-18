@@ -24,6 +24,10 @@ Standard Deviation: 10.055730472302221
 
 bins 576 36h-4s-4v bins
 
+R^2:  -208658.17284685693
+Average error:  1650.0687153126935
+Mean: 1650.0687153126935
+Standard Deviation: 33060.67197386269
 
 bins 288 18h-4s-4v
 
